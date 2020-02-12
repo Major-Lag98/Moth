@@ -1,2 +1,2 @@
 # Moth
- A Game about lasers and stuff
+ A Game about lasers and stuff.
