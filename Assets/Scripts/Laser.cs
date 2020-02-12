@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class Laser : MonoBehaviour
 {
@@ -234,14 +235,14 @@ public class Laser : MonoBehaviour
             laser.GetComponent<LineRenderer>().sortingOrder = 0;*/
             SetColor(laser, light, Color.green, 0);
         }
-        light.GetComponent<Light>().range = range;
-        light.GetComponent<Light>().intensity = intensity;
+        //light.GetComponent<Light2D>().pointLightOuterRadius = range;
+        light.GetComponent<Light2D>().intensity = intensity;
 
     }
 
     void SetColor(GameObject laser, GameObject light ,Color color, int layer)
     {
-        light.GetComponent<Light>().color = color;
+        light.GetComponent<Light2D>().color = color;
         laser.GetComponent<LineRenderer>().startColor = color;
         laser.GetComponent<LineRenderer>().endColor = color;
         laser.GetComponent<LineRenderer>().sortingOrder = layer;

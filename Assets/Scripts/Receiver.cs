@@ -37,7 +37,7 @@ public class Receiver : MonoBehaviour
             progress -= 11 * Time.deltaTime;
         }
         progress = Mathf.Clamp(progress, 0, 100);
-        this.transform.parent.GetComponentInChildren<Light>().intensity = progress / 10;
+        this.transform.parent.GetComponentInChildren<Light2D>().intensity = progress / 100;
         //Debug.Log(progress);
         charging = false;
 
