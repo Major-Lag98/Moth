@@ -1,0 +1,627 @@
+fileFormatVersion: 2
+guid: fa6e12b8e1e60cc468e560c65760d0e7
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 3920152750724809636
+    second: Floors2_0
+  - first:
+      213: -2097149267661913469
+    second: Floors2_1
+  - first:
+      213: 1276941611009222006
+    second: Floors2_2
+  - first:
+      213: 933979709086836596
+    second: Floors2_3
+  - first:
+      213: 595767857889644843
+    second: Floors2_4
+  - first:
+      213: -8762737429155719642
+    second: Floors2_5
+  - first:
+      213: 2505620759267195210
+    second: Floors2_6
+  - first:
+      213: -6425723126975606323
+    second: Floors2_7
+  - first:
+      213: -3993185600423769662
+    second: Floors2_8
+  - first:
+      213: 4142118611764204826
+    second: Floors2_9
+  - first:
+      213: 495609661624428137
+    second: Floors2_10
+  - first:
+      213: -1018497850299756928
+    second: Floors2_11
+  - first:
+      213: 4076934893344555398
+    second: Floors2_12
+  - first:
+      213: 7941244643450530077
+    second: Floors2_13
+  - first:
+      213: -6101847739299927434
+    second: Floors2_14
+  - first:
+      213: 2111343232173013541
+    second: Floors2_15
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 64
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Floors2_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 192
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 29, y: -32}
+        - {x: 29, y: -29}
+        - {x: 32, y: -29}
+        - {x: 32, y: -32}
+      tessellationDetail: 0
+      bones: []
+      spriteID: c81bc73c36601cc47871f91d86e190c2
+      internalID: 3920152750724809636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Floors2_1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 192
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -32, y: -32}
+        - {x: -32, y: -29}
+        - {x: -29, y: -29}
+        - {x: -29, y: -32}
+      - - {x: 29, y: -32}
+        - {x: 29, y: -29}
+        - {x: 32, y: -29}
+        - {x: 32, y: -32}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 75f802c326324f248b8a91408f809207
+      internalID: -2097149267661913469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Floors2_2
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 192
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -32, y: -32}
+        - {x: -32, y: -29}
+        - {x: -29, y: -29}
+        - {x: -29, y: -32}
+      - - {x: 29, y: -32}
+        - {x: 29, y: -29}
+        - {x: 32, y: -29}
+        - {x: 32, y: -32}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7e3e19ff6f417de4784e5ef5df721c3a
+      internalID: 1276941611009222006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Floors2_3
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 192
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -32, y: -32}
+        - {x: -32, y: -29}
+        - {x: -29, y: -29}
+        - {x: -29, y: -32}
+      tessellationDetail: 0
+      bones: []
+      spriteID: dd25a8697f9561341b07d28835e96568
+      internalID: 933979709086836596
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Floors2_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 29, y: 29}
+        - {x: 29, y: 32}
+        - {x: 32, y: 32}
+        - {x: 32, y: 29}
+      - - {x: 29, y: -32}
+        - {x: 29, y: -29}
+        - {x: 32, y: -29}
+        - {x: 32, y: -32}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c0767bf3350aef45b6798f215d515f2
+      internalID: 595767857889644843
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Floors2_5
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -32, y: 29}
+        - {x: -32, y: 32}
+        - {x: -29, y: 32}
+        - {x: -29, y: 29}
+      - - {x: 29, y: 29}
+        - {x: 29, y: 32}
+        - {x: 32, y: 32}
+        - {x: 32, y: 29}
+      - - {x: -32, y: -32}
+        - {x: -32, y: -29}
+        - {x: -29, y: -29}
+        - {x: -29, y: -32}
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac18c14faee801a4ca62dbf11c2906bd
+      internalID: -8762737429155719642
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Floors2_6
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 29, y: -32}
+        - {x: 29, y: -29}
+        - {x: 32, y: -29}
+        - {x: 32, y: -32}
+      - - {x: 29, y: 29}
+        - {x: 29, y: 32}
+        - {x: 32, y: 32}
+        - {x: 32, y: 29}
+      - - {x: -32, y: 29}
+        - {x: -32, y: 32}
+        - {x: -29, y: 32}
+        - {x: -29, y: 29}
+      tessellationDetail: 0
+      bones: []
+      spriteID: ceef9e9ab86d49d489f5b9747bd50fab
+      internalID: 2505620759267195210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Floors2_7
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -32, y: 29}
+        - {x: -32, y: 32}
+        - {x: -29, y: 32}
+        - {x: -29, y: 29}
+      - - {x: -32, y: -32}
+        - {x: -32, y: -29}
+        - {x: -29, y: -29}
+        - {x: -29, y: -32}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5636cc601af817a4ba03d6d395f7cb10
+      internalID: -6425723126975606323
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Floors2_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 29, y: 29}
+        - {x: 29, y: 32}
+        - {x: 32, y: 32}
+        - {x: 32, y: 29}
+      - - {x: 29, y: -32}
+        - {x: 29, y: -29}
+        - {x: 32, y: -29}
+        - {x: 32, y: -32}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1ff60e1083bc54148afc5efc1dc2e3a5
+      internalID: -3993185600423769662
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Floors2_9
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -32, y: -32}
+        - {x: -32, y: -29}
+        - {x: -29, y: -29}
+        - {x: -29, y: -32}
+      - - {x: -32, y: 29}
+        - {x: -32, y: 32}
+        - {x: -29, y: 32}
+        - {x: -29, y: 29}
+      - - {x: 29, y: -32}
+        - {x: 29, y: -29}
+        - {x: 32, y: -29}
+        - {x: 32, y: -32}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c8b63410400e824c8b85c461bf0bb50
+      internalID: 4142118611764204826
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Floors2_10
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 29, y: -32}
+        - {x: 29, y: -29}
+        - {x: 32, y: -29}
+        - {x: 32, y: -32}
+      - - {x: -32, y: -32}
+        - {x: -32, y: -29}
+        - {x: -29, y: -29}
+        - {x: -29, y: -32}
+      - - {x: 29, y: 29}
+        - {x: 29, y: 32}
+        - {x: 32, y: 32}
+        - {x: 32, y: 29}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 58c01868d4139934db14bcc266c5a219
+      internalID: 495609661624428137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Floors2_11
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -32, y: 29}
+        - {x: -32, y: 32}
+        - {x: -29, y: 32}
+        - {x: -29, y: 29}
+      - - {x: -32, y: -32}
+        - {x: -32, y: -29}
+        - {x: -29, y: -29}
+        - {x: -29, y: -32}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 745b763b7a68ee044bd92cbfd1eb35c1
+      internalID: -1018497850299756928
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Floors2_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 29, y: 29}
+        - {x: 29, y: 32}
+        - {x: 32, y: 32}
+        - {x: 32, y: 29}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0bf02383aded9ae42980e148c951f60e
+      internalID: 4076934893344555398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Floors2_13
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -32, y: 29}
+        - {x: -32, y: 32}
+        - {x: -29, y: 32}
+        - {x: -29, y: 29}
+      - - {x: 29, y: 29}
+        - {x: 29, y: 32}
+        - {x: 32, y: 32}
+        - {x: 32, y: 29}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 73b74f2f7cd3dcb419718c7fd00bfd6b
+      internalID: 7941244643450530077
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Floors2_14
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -32, y: 29}
+        - {x: -32, y: 32}
+        - {x: -29, y: 32}
+        - {x: -29, y: 29}
+      - - {x: 29, y: 29}
+        - {x: 29, y: 32}
+        - {x: 32, y: 32}
+        - {x: 32, y: 29}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 410bfade85644bc44a5324f87ca9fdef
+      internalID: -6101847739299927434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Floors2_15
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -32, y: 29}
+        - {x: -32, y: 32}
+        - {x: -29, y: 32}
+        - {x: -29, y: 29}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 261afc20afaabc44baee0548f21c4aa8
+      internalID: 2111343232173013541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
