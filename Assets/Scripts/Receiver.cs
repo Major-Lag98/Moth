@@ -8,6 +8,11 @@ public class Receiver : MonoBehaviour
     public bool charging = false;
     public bool charged = false;
 
+    public bool isWhite = false;
+    public bool isRed = false;
+    public bool isBlue = false;
+    public bool isGreen = false;
+
     int rotationSpeed = 10;
 
     public int amountOfMothsToSpawn = 8;

@@ -67,8 +67,24 @@ public class Laser : MonoBehaviour
             {
                 //Debug.Log("Receiver hit");
 
-                GameObject receiver = hit2D.transform.gameObject;
-                receiver.GetComponent<Receiver>().charging = true;
+                Receiver receiver = hit2D.transform.gameObject.GetComponent<Receiver>();
+                if (receiver.isWhite && color == "WHT")
+                {
+                    receiver.charging = true;
+                }
+                if (receiver.isRed && color == "RED")
+                {
+                    receiver.charging = true;
+                }
+                if (receiver.isBlue && color == "BLU")
+                {
+                    receiver.charging = true;
+                }
+                if (receiver.isGreen && color == "GRN")
+                {
+                    receiver.charging = true;
+                }
+
 
             }
             if (hit2D.transform.gameObject.tag == "Mirror") //mirror hit. set new pos where hit. reflect angle and make that new direction
@@ -114,27 +130,7 @@ public class Laser : MonoBehaviour
             DrawLaser(position, position + direction * maxStepDistance, color);
         }
 
-        /*GameObject light = Instantiate(pointLight, (Vector3)hit2D.point + new Vector3(0, 0, -0.1f), Quaternion.identity);
-        if (color == "WHT")
-        {
-            light.GetComponent<Light>().color = Color.white;
-        }
-        if (color == "RED")
-        {
-            light.GetComponent<Light>().color = Color.red;
-
-        }
-        if (color == "BLU")
-        {
-            light.GetComponent<Light>().color = Color.blue;
-
-        }
-        if (color == "GRN")
-        {
-            light.GetComponent<Light>().color = Color.green;
-        }
-        light.GetComponent<Light>().range = range;
-        light.GetComponent<Light>().intensity = intensity;*/
+        
     }
 
     void Refract(Vector2 normal, Vector2 direction, Vector2 point, GameObject lastHit, int recursionsRemainging, float n1, float n2, string color)
@@ -203,35 +199,23 @@ public class Laser : MonoBehaviour
         laser.GetComponent<LineRenderer>().SetPosition(1, end);
         if (color == "WHT")
         {
-            /*light.GetComponent<Light>().color = Color.white;
-            laser.GetComponent<LineRenderer>().startColor = Color.white;
-            laser.GetComponent<LineRenderer>().endColor = Color.white;
-            laser.GetComponent<LineRenderer>().sortingOrder = 3;*/
+            
             SetColor(laser, light, Color.white, 3);
             
         }
         if (color == "RED")
         {
-            /*light.GetComponent<Light>().color = Color.red;
-            laser.GetComponent<LineRenderer>().startColor = Color.red;
-            laser.GetComponent<LineRenderer>().endColor = Color.red;
-            laser.GetComponent<LineRenderer>().sortingOrder = 2;*/
+            
             SetColor(laser, light, Color.red, 2);
         }
         if (color == "BLU")
         {
-            /*light.GetComponent<Light>().color = Color.blue;
-            laser.GetComponent<LineRenderer>().startColor = Color.blue;
-            laser.GetComponent<LineRenderer>().endColor = Color.blue;
-            laser.GetComponent<LineRenderer>().sortingOrder = 1;*/
+            
             SetColor(laser, light, Color.blue, 1);
         }
         if (color == "GRN")
         {
-            /*light.GetComponent<Light>().color = Color.green;
-            laser.GetComponent<LineRenderer>().startColor = Color.green;
-            laser.GetComponent<LineRenderer>().endColor = Color.green;
-            laser.GetComponent<LineRenderer>().sortingOrder = 0;*/
+            
             SetColor(laser, light, Color.green, 0);
         }
         light.GetComponent<Light>().range = range;
