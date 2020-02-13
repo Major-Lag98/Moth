@@ -150,8 +150,8 @@ public class Laser : MonoBehaviour
         Vector2 refractioDirection = refractionX + refractionY; //direction of refraction
 
         //find exit position
-        Vector2 exitPosition = new Vector2();
-        Vector2 exitNormal = new Vector2();
+        Vector2 exitPosition = Vector2.zero;
+        Vector2 exitNormal = Vector2.zero;
         Vector2 findOppBegin = point + refractioDirection * 1f;
         RaycastHit2D[] exitHit = Physics2D.RaycastAll(findOppBegin, -refractioDirection);
         for (int i = 0; i <= exitHit.Length; i++)
@@ -198,46 +198,27 @@ public class Laser : MonoBehaviour
     void DrawLaser(Vector2 start, Vector2 end, string color)
     {
         GameObject laser = Instantiate(laserToSpawn, Vector2.zero, Quaternion.identity);
-        GameObject light = Instantiate(pointLight, (Vector3)end + new Vector3(0, 0, -0.1f), Quaternion.identity);
+        GameObject light = Instantiate(pointLight, end, Quaternion.identity);
 
         laser.GetComponent<LineRenderer>().SetPosition(0, start);
         laser.GetComponent<LineRenderer>().SetPosition(1, end);
         if (color == "WHT")
         {
-            /*light.GetComponent<Light>().color = Color.white;
-            laser.GetComponent<LineRenderer>().startColor = Color.white;
-            laser.GetComponent<LineRenderer>().endColor = Color.white;
-            laser.GetComponent<LineRenderer>().sortingOrder = 3;*/
             SetColor(laser, light, Color.white, 3);
-            
         }
         if (color == "RED")
         {
-            /*light.GetComponent<Light>().color = Color.red;
-            laser.GetComponent<LineRenderer>().startColor = Color.red;
-            laser.GetComponent<LineRenderer>().endColor = Color.red;
-            laser.GetComponent<LineRenderer>().sortingOrder = 2;*/
             SetColor(laser, light, Color.red, 2);
         }
         if (color == "BLU")
         {
-            /*light.GetComponent<Light>().color = Color.blue;
-            laser.GetComponent<LineRenderer>().startColor = Color.blue;
-            laser.GetComponent<LineRenderer>().endColor = Color.blue;
-            laser.GetComponent<LineRenderer>().sortingOrder = 1;*/
             SetColor(laser, light, Color.blue, 1);
         }
         if (color == "GRN")
         {
-            /*light.GetComponent<Light>().color = Color.green;
-            laser.GetComponent<LineRenderer>().startColor = Color.green;
-            laser.GetComponent<LineRenderer>().endColor = Color.green;
-            laser.GetComponent<LineRenderer>().sortingOrder = 0;*/
             SetColor(laser, light, Color.green, 0);
         }
-        //light.GetComponent<Light2D>().pointLightOuterRadius = range;
         light.GetComponent<Light2D>().intensity = intensity;
-
     }
 
     void SetColor(GameObject laser, GameObject light ,Color color, int layer)
@@ -250,8 +231,8 @@ public class Laser : MonoBehaviour
 
     void CriticalAngle(Vector2 position, Vector2 inDirection, Vector2 normal, GameObject lastHit, int recursionsRemainging, float n1, float n2, string color)
     {
-        Vector2 exitPosition = new Vector2();
-        Vector2 exitNormal = new Vector2();
+        Vector2 exitPosition = Vector2.zero;
+        Vector2 exitNormal = Vector2.zero;
         Vector2 reflectDirection = Vector2.Reflect(inDirection, normal);
         RaycastHit2D[] exitHit = Physics2D.RaycastAll(position + reflectDirection * 1f, -reflectDirection);
         for (int i =0; i < exitHit.Length; i++)//find a match
