@@ -127,18 +127,81 @@ public class Laser : MonoBehaviour
             {
                 Filter filter = hit2D.transform.GetComponent<Filter>();
 
-                if (filter.isBlue)
-                {
 
-                }
-                if (filter.isRed)
-                {
 
-                }
-                if (filter.isYellow)
+                if (color == "WHT")
                 {
-
+                    if (filter.isBlue)
+                    {
+                        color = "BLU";
+                    }
+                    if (filter.isRed)
+                    {
+                        color = "RED";
+                    }
+                    if (filter.isYellow)
+                    {
+                        //color = "YLO";
+                    }
                 }
+                if (color == "RED")
+                {
+                    if (filter.isBlue)
+                    {
+                        color = "PRP";
+                    }
+                    if (filter.isRed)
+                    {
+                        color = "RED";
+                    }
+                    if (filter.isYellow)
+                    {
+                        //color = "ORN";
+                    }
+                }
+                if (color == "BLU")
+                {
+                    if (filter.isBlue)
+                    {
+                        color = "BLU";
+                    }
+                    if (filter.isRed)
+                    {
+                        color = "PRP";
+                    }
+                    if (filter.isYellow)
+                    {
+                        //color = "GRN";
+                    }
+                }
+                if (color == "YLO")
+                {
+                    if (filter.isBlue)
+                    {
+                        color = "GRN";
+                    }
+                    if (filter.isRed)
+                    {
+                        color = "ORN";
+                    }
+                    if (filter.isYellow)
+                    {
+                        //color = "YLO";
+                    }
+                }
+                position = hit2D.point;
+                Vector2 oppPos = new Vector2();
+                RaycastHit2D[] oppHit = Physics2D.RaycastAll(position + direction, -direction);
+                for (int i = 0; i <= oppHit.Length; i++)
+                {
+                    if (oppHit[i].transform.gameObject == hit2D.transform.gameObject)
+                    {
+                        oppPos = oppHit[i].point;
+                        break;
+                    }
+                }
+                DrawLaser(position, oppPos, color);
+                DrawPredictedReflection(oppPos + direction * 0.01f, direction, recursionsRemaing--, color);
             }
         }
         else //nothing hit
@@ -246,6 +309,10 @@ public class Laser : MonoBehaviour
         laser.GetComponent<LineRenderer>().startColor = color;
         laser.GetComponent<LineRenderer>().endColor = color;
         laser.GetComponent<LineRenderer>().sortingOrder = layer;
+    }
+    void Filter()
+    {
+
     }
 
     void CriticalAngle(Vector2 position, Vector2 inDirection, Vector2 normal, GameObject lastHit, int recursionsRemainging, float n1, float n2, string color)
