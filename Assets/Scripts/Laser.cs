@@ -123,6 +123,23 @@ public class Laser : MonoBehaviour
                     //Refract();
                 }
             }
+            if (hit2D.transform.gameObject.tag == "Filter")
+            {
+                Filter filter = hit2D.transform.GetComponent<Filter>();
+
+                if (filter.isBlue)
+                {
+
+                }
+                if (filter.isRed)
+                {
+
+                }
+                if (filter.isYellow)
+                {
+
+                }
+            }
         }
         else //nothing hit
         {
