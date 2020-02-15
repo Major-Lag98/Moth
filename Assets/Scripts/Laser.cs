@@ -13,7 +13,7 @@ public class Laser : MonoBehaviour
     float airIndex = 1.0f;
     public float glassIndex = 1.5f;
     public GameObject laserToSpawn;
-    string originColor = "WHT";
+    public string originColor = "WHT";
 
     public GameObject pointLight;
 
@@ -127,81 +127,110 @@ public class Laser : MonoBehaviour
             {
                 Filter filter = hit2D.transform.GetComponent<Filter>();
 
+                if (color != "BGRN" && color != "BPRP" && color != "RGRN" && color != "RPRP" && color != "YGRN" && color != "YORN")
+                {
+                    if (!(color == "PRP" && filter.isYellow) && !(color == "ORN" && filter.isBlue) && !(color == "GRN" && filter.isRed))
+                    {
 
 
-                if (color == "WHT")
-                {
-                    if (filter.isBlue)
-                    {
-                        color = "BLU";
-                    }
-                    if (filter.isRed)
-                    {
-                        color = "RED";
-                    }
-                    if (filter.isYellow)
-                    {
-                        //color = "YLO";
+                        if (filter.isBlue)
+                        {
+                            if (color == "WHT")
+                            {
+                                color = "BLU";
+                            }
+                            else if (color == "BLU")
+                            {
+                                color = "BLU";
+                            }
+                            else if (color == "RED")
+                            {
+                                color = "PRP";
+                            }
+                            else if (color == "YLO")
+                            {
+                                color = "GRN";
+                            }
+                            else if (color == "GRN")
+                            {
+                                color = "BGRN";
+                            }
+                            else if (color == "PRP")
+                            {
+                                color = "BPRP";
+                            }
+                        }
+                        if (filter.isRed)
+                        {
+                            if (color == "WHT")
+                            {
+                                color = "RED";
+                            }
+                            else if (color == "BLU")
+                            {
+                                color = "PRP";
+                            }
+                            else if (color == "RED")
+                            {
+                                color = "RED";
+                            }
+                            else if (color == "YLO")
+                            {
+                                color = "ORN";
+                            }
+                            else if (color == "ORN")
+                            {
+                                color = "RORN";
+                            }
+                            else if (color == "PRP")
+                            {
+                                color = "RPRP";
+                            }
+                        }
+                        if (filter.isYellow)
+                        {
+                            if (color == "WHT")
+                            {
+                                color = "YLO";
+                            }
+                            else if (color == "BLU")
+                            {
+                                color = "GRN";
+                            }
+                            else if (color == "RED")
+                            {
+                                color = "ORN";
+                            }
+                            else if (color == "YLO")
+                            {
+                                color = "YLO";
+                            }
+                            else if (color == "GRN")
+                            {
+                                color = "YGRN";
+                            }
+                            else if (color == "ORN")
+                            {
+                                color = "YORN";
+                            }
+                        }
+                        position = hit2D.point;
+                        Vector2 oppPos = new Vector2();
+                        RaycastHit2D[] oppHit = Physics2D.RaycastAll(position + direction, -direction);
+                        for (int i = 0; i <= oppHit.Length; i++)
+                        {
+                            if (oppHit[i].transform.gameObject == hit2D.transform.gameObject)
+                            {
+                                oppPos = oppHit[i].point;
+                                break;
+                            }
+                        }
+                        DrawLaser(position, oppPos, color);
+
+                        Debug.Log(color);
+                        DrawPredictedReflection(oppPos + direction * 0.01f, direction, recursionsRemaing--, color);
                     }
                 }
-                if (color == "RED")
-                {
-                    if (filter.isBlue)
-                    {
-                        color = "PRP";
-                    }
-                    if (filter.isRed)
-                    {
-                        color = "RED";
-                    }
-                    if (filter.isYellow)
-                    {
-                        //color = "ORN";
-                    }
-                }
-                if (color == "BLU")
-                {
-                    if (filter.isBlue)
-                    {
-                        color = "BLU";
-                    }
-                    if (filter.isRed)
-                    {
-                        color = "PRP";
-                    }
-                    if (filter.isYellow)
-                    {
-                        //color = "GRN";
-                    }
-                }
-                if (color == "YLO")
-                {
-                    if (filter.isBlue)
-                    {
-                        color = "GRN";
-                    }
-                    if (filter.isRed)
-                    {
-                        color = "ORN";
-                    }
-                    if (filter.isYellow)
-                    {
-                        //color = "YLO";
-                    }
-                }
-                position = hit2D.point;
-                Vector2 oppPos = new Vector2();
-                RaycastHit2D[] oppHit = Physics2D.RaycastAll(position + direction, -direction);
-                for (int i = 0; i <= oppHit.Length; i++)
-                {
-                    if (oppHit[i].transform.gameObject == hit2D.transform.gameObject)
-                    {
-                        oppPos = oppHit[i].point;
-                        break;
-                    }
-                }
-                DrawLaser(position, oppPos, color);
-                DrawPredictedReflection(oppPos + direction * 0.01f, direction, recursionsRemaing--, color);
             }
         }
         else //nothing hit
@@ -209,9 +238,8 @@ public class Laser : MonoBehaviour
             //Gizmos.DrawLine(position, position + direction * maxStepDistance);
             DrawLaser(position, position + direction * maxStepDistance, color);
         }
-
-        
     }
+    
 
     void Refract(Vector2 normal, Vector2 direction, Vector2 point, GameObject lastHit, int recursionsRemainging, float n1, float n2, string color)
     {
@@ -279,25 +307,60 @@ public class Laser : MonoBehaviour
         laser.GetComponent<LineRenderer>().SetPosition(1, end);
         if (color == "WHT")
         {
-            
             SetColor(laser, light, Color.white, 3);
-            
         }
         if (color == "RED")
         {
-            
             SetColor(laser, light, Color.red, 2);
         }
         if (color == "BLU")
         {
-            
             SetColor(laser, light, Color.blue, 1);
+        }
+        if (color == "YLO")
+        {
+            SetColor(laser, light, Color.yellow, 0);
         }
         if (color == "GRN")
         {
-            
             SetColor(laser, light, Color.green, 0);
         }
+        if (color == "ORN")
+        {
+            SetColor(laser, light, new Color(1, 0.6470588f, 0, 1), 0);
+        }
+        if (color == "PRP")
+        {
+            SetColor(laser, light, new Color(0.5019608f, 0, 0.5019608f, 1), 0);
+        }
+        if (color == "BPRP")
+        {
+            SetColor(laser, light, new Color(0.5411765f, 0.1686275f, 0.8862745f, 1), 0);
+        }
+        if (color == "BGRN")
+        {
+            SetColor(laser, light, new Color(0.05098039f, 0.5960785f, 0.7294118f, 1), 0);
+        }
+        if (color == "YGRN")
+        {
+            SetColor(laser, light, new Color(0.6039216f, 0.8039216f, 0.1960784f, 1), 0);
+        }
+        if (color == "YORN")
+        {
+            SetColor(laser, light, new Color(1, 0.8f, 0.25f, 1), 0);
+        }
+        if (color == "RORN")
+        {
+            SetColor(laser, light, new Color(1, 0.3254902f, 0.2862745f, 1), 0);
+        }
+        if (color == "RPRP")
+        {
+            SetColor(laser, light, new Color(0.5019608f, 0, 0.2509804f, 1), 0);
+        }
+
+
+
+
         light.GetComponent<Light>().range = range;
         light.GetComponent<Light>().intensity = intensity;
 
@@ -310,10 +373,7 @@ public class Laser : MonoBehaviour
         laser.GetComponent<LineRenderer>().endColor = color;
         laser.GetComponent<LineRenderer>().sortingOrder = layer;
     }
-    void Filter()
-    {
-
-    }
+    
 
     void CriticalAngle(Vector2 position, Vector2 inDirection, Vector2 normal, GameObject lastHit, int recursionsRemainging, float n1, float n2, string color)
     {
