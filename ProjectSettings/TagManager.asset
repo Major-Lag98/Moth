@@ -14,6 +14,7 @@ TagManager:
   - LaserAfter
   - Moth
   - Light
+  - Filter
   layers:
   - Default
   - TransparentFX
