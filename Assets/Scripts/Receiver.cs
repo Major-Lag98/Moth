@@ -11,7 +11,16 @@ public class Receiver : MonoBehaviour
     public bool isWhite = false;
     public bool isRed = false;
     public bool isBlue = false;
+    public bool isYellow = false;
     public bool isGreen = false;
+    public bool isOrange = false;
+    public bool isPurple = false;
+    public bool isRedPurple = false;
+    public bool isRedOrange = false;
+    public bool isYellowGreen = false;
+    public bool isYellowOrange = false;
+    public bool isBlueGreen = false;
+    public bool isBluePurple = false;
 
     int rotationSpeed = 10;
 

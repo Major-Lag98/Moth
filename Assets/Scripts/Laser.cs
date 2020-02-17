@@ -87,7 +87,43 @@ public class Laser : MonoBehaviour
                 {
                     receiver.charging = true;
                 }
+                if (receiver.isYellow && color == yellow)
+                {
+                    receiver.charging = true;
+                }
                 if (receiver.isGreen && color == green)
+                {
+                    receiver.charging = true;
+                }
+                if (receiver.isOrange && color == orange)
+                {
+                    receiver.charging = true;
+                }
+                if (receiver.isPurple && color == purple)
+                {
+                    receiver.charging = true;
+                }
+                if (receiver.isRedPurple && color == redPurple)
+                {
+                    receiver.charging = true;
+                }
+                if (receiver.isRedOrange && color == redOrange)
+                {
+                    receiver.charging = true;
+                }
+                if (receiver.isYellowOrange && color == yellowOrange)
+                {
+                    receiver.charging = true;
+                }
+                if (receiver.isYellowGreen && color == yellowGreen)
+                {
+                    receiver.charging = true;
+                }
+                if (receiver.isBlueGreen && color == blueGreen)
+                {
+                    receiver.charging = true;
+                }
+                if (receiver.isBluePurple && color == bluePurple)
                 {
                     receiver.charging = true;
                 }
@@ -122,21 +158,22 @@ public class Laser : MonoBehaviour
             if (hit2D.transform.gameObject.tag == "Prism")
             {
                 
-                if (recursionsRemaing > 0)
+                if (recursionsRemaing > 0 && color == white)
                 {
                     Refract(hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaing, airIndex, glassIndex, red);
                     Refract(hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaing, airIndex, glassIndex + 0.1f, blue);
                     Refract(hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaing, airIndex, glassIndex + 0.05f, green); 
                     //Refract();
                 }
+                else Refract(hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaing, airIndex, glassIndex, color);
             }
             if (hit2D.transform.gameObject.tag == "Filter")
             {
                 Filter filter = hit2D.transform.GetComponent<Filter>();
 
-                if (color != blueGreen && color != bluePurple && color != redPurple && color != yellowGreen && color != yellowOrange)
+                if (color != blueGreen && color != bluePurple && color != redPurple && color != yellowGreen && color != yellowOrange) //tirtiary colors cant be changed
                 {
-                    if (!(color == purple && filter.isYellow) && !(color == orange && filter.isBlue) && !(color == green && filter.isRed))
+                    if (!(color == purple && filter.isYellow) && !(color == orange && filter.isBlue) && !(color == green && filter.isRed)) //complemantary colors cant be changed
                     {
 
 
