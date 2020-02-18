@@ -112,8 +112,16 @@ public class Receiver : MonoBehaviour
     void SpawnMoth(Vector2 spawnLoc)
     {
         Vector3 lookDirection = (Vector3)spawnLoc - this.transform.position;
-        GameObject m = Instantiate(moth,spawnLoc, Quaternion.Euler(spawnLoc));
-        m.transform.SetParent(this.transform.parent);
-        m.GetComponent<Moth>().target = this.gameObject;
+        //GameObject m = Instantiate(moth,spawnLoc, Quaternion.Euler(spawnLoc));
+        GameObject moth = ObjectPooler.SharedInstance.GetPooledObject("Moth");
+        if (moth != null)
+        {
+            moth.transform.position = spawnLoc;
+            moth.transform.rotation = Quaternion.identity;
+            moth.transform.SetParent(this.transform.parent);
+            moth.GetComponent<Moth>().target = this.gameObject;
+            moth.SetActive(true);
+        }
+        
     }
 }
