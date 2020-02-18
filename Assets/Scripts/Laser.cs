@@ -48,9 +48,10 @@ public class Laser : MonoBehaviour
             return;
         }
         foreach (GameObject laser in GameObject.FindGameObjectsWithTag("Laser")) //every update redraw laser
-            Destroy(laser);
+            //Destroy(laser);
+            laser.SetActive(false);
         foreach (GameObject light in GameObject.FindGameObjectsWithTag("Light")) //every update redraw pointlights
-            Destroy(light);
+            light.SetActive(false);
 
 
         DrawPredictedReflection(this.transform.position, this.transform.up, maxRecursions, white);
@@ -324,8 +325,22 @@ public class Laser : MonoBehaviour
     }
     void DrawLaser(Vector2 start, Vector2 end, Color color)
     {
-        GameObject laser = Instantiate(laserToSpawn, Vector2.zero, Quaternion.identity);
-        GameObject light = Instantiate(pointLight, (Vector3)end + new Vector3(0, 0, -0.1f), Quaternion.identity);
+        //GameObject laser = Instantiate(laserToSpawn, Vector2.zero, Quaternion.identity);
+        GameObject laser = ObjectPooler.SharedInstance.GetPooledObject("Laser");
+        if (laser != null)
+        {
+            laser.transform.position = Vector2.zero;
+            laser.transform.rotation = Quaternion.identity;
+            laser.SetActive(true);
+        }
+        //GameObject light = Instantiate(pointLight, (Vector3)end + new Vector3(0, 0, -0.1f), Quaternion.identity);
+        GameObject light = ObjectPooler.SharedInstance.GetPooledObject("Light");
+        if (light != null)
+        {
+            light.transform.position = (Vector3)end + new Vector3(0, 0, -0.1f);
+            light.transform.rotation = Quaternion.identity;
+            light.SetActive(true);
+        }
 
         laser.GetComponent<LineRenderer>().SetPosition(0, start);
         laser.GetComponent<LineRenderer>().SetPosition(1, end);

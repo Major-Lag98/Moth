@@ -33,8 +33,8 @@ public class Moth : MonoBehaviour
     {
         if (this.transform.position.x > screenBounds.x + destroyBuffer || this.transform.position.x < -screenBounds.x - destroyBuffer || this.transform.position.y > screenBounds.y + destroyBuffer || this.transform.position.y < -screenBounds.y - destroyBuffer)
         {
-            Destroy(this.gameObject); //moth has left the screen
-            
+            //Destroy(this.gameObject); //moth has left the screen
+            this.gameObject.SetActive(false);
         }
     }
 

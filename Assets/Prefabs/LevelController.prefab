@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3690701972075841537}
   - component: {fileID: 3690701972075841536}
+  - component: {fileID: 458140866}
   m_Layer: 0
   m_Name: LevelController
   m_TagString: Untagged
@@ -43,3 +44,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b534bcfab6429da478f7009de9141098, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &458140866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3690701972075841538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a81a1ec8c254e4479ebd01634821371, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemsToPool:
+  - objectToPool: {fileID: 1282231757911092644, guid: abe51b2ab3299fc4ab7d03902e9b9d58,
+      type: 3}
+    amountToPool: 20
+    shouldExpand: 1
+  - objectToPool: {fileID: 7861143257451256593, guid: 9a1fb21488b594744b0ed313a189d568,
+      type: 3}
+    amountToPool: 10
+    shouldExpand: 1
+  - objectToPool: {fileID: 3984904571861643320, guid: 4efeffbce8d6ceb46b5314f85a4a341b,
+      type: 3}
+    amountToPool: 24
+    shouldExpand: 1

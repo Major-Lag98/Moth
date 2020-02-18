@@ -104,6 +104,19 @@ MonoBehaviour:
     type: 3}
   pointLight: {fileID: 7861143257451256593, guid: 9a1fb21488b594744b0ed313a189d568,
     type: 3}
+  white: {r: 1, g: 1, b: 1, a: 1}
+  red: {r: 1, g: 0, b: 0, a: 1}
+  redPurple: {r: 0.5019608, g: 0, b: 0.2509804, a: 1}
+  purple: {r: 0.5019608, g: 0, b: 0.5019608, a: 1}
+  bluePurple: {r: 0.413, g: 0.1686275, b: 0.8862745, a: 1}
+  blue: {r: 0, g: 0, b: 1, a: 1}
+  blueGreen: {r: 0.05098039, g: 0.5960785, b: 0.7294118, a: 1}
+  green: {r: 0, g: 1, b: 0, a: 1}
+  yellowGreen: {r: 0.6039216, g: 0.8039216, b: 0.1960784, a: 1}
+  yellow: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  yellowOrange: {r: 1, g: 0.8, b: 0.25, a: 1}
+  orange: {r: 1, g: 0.6470588, b: 0, a: 1}
+  redOrange: {r: 1, g: 0.3254902, b: 0.2862745, a: 1}
 --- !u!1001 &1464527385
 PrefabInstance:
   m_ObjectHideFlags: 0
