@@ -122,6 +122,5 @@ public class Receiver : MonoBehaviour
             moth.GetComponent<Moth>().target = this.gameObject;
             moth.SetActive(true);
         }
-        
     }
 }
