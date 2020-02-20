@@ -45,7 +45,7 @@ public class Moth : MonoBehaviour
         foreach (GameObject moth in GameObject.FindGameObjectsWithTag("Moth"))
         {
             
-            if (Vector2.Distance(this.transform.position, moth.transform.position) < personalSpace && this.gameObject != moth) //if a moth is inveading my personal space, avoid it
+            if (Vector2.Distance(this.transform.position, moth.transform.position) < personalSpace && this.gameObject != moth) //if a moth is invading my personal space, avoid it
             {
                 target = moth;
                 flee = true;
