@@ -76,7 +76,7 @@ public class Laser : MonoBehaviour
                 //Debug.Log("Receiver hit");
 
                 Receiver receiver = hit2D.transform.gameObject.GetComponent<Receiver>();
-                if (receiver.isWhite && color == white)
+                if (receiver.isWhite && color == white) //try to make like this ---> if (receiver.color == color) { receiver.charging = true }
                 {
                     receiver.charging = true;
                 }
@@ -325,43 +325,33 @@ public class Laser : MonoBehaviour
     }
     void DrawLaser(Vector2 start, Vector2 end, Color color)
     {
-        //GameObject laser = Instantiate(laserToSpawn, Vector2.zero, Quaternion.identity);
+
         GameObject laser = ObjectPooler.SharedInstance.GetPooledObject("Laser");
         if (laser != null)
         {
+
             laser.transform.position = Vector2.zero;
             laser.transform.rotation = Quaternion.identity;
+            LineRenderer lr = laser.GetComponent<LineRenderer>();
+            lr.SetPosition(0, start);
+            lr.SetPosition(1, end);
+            lr.startColor = color;
+            lr.endColor = color;
             laser.SetActive(true);
         }
-        //GameObject light = Instantiate(pointLight, (Vector3)end + new Vector3(0, 0, -0.1f), Quaternion.identity);
+
         GameObject light = ObjectPooler.SharedInstance.GetPooledObject("Light");
         if (light != null)
         {
             light.transform.position = (Vector3)end + new Vector3(0, 0, -0.1f);
             light.transform.rotation = Quaternion.identity;
+            Light l = light.GetComponent<Light>();
+            l.range = range;
+            l.intensity = intensity;
+            l.color = color;
             light.SetActive(true);
         }
-
-        laser.GetComponent<LineRenderer>().SetPosition(0, start);
-        laser.GetComponent<LineRenderer>().SetPosition(1, end);
-
-        light.GetComponent<Light>().range = range;
-        light.GetComponent<Light>().intensity = intensity;
-
-        SetColor(laser, light, color, 3);
-
-        
-
     }
-
-    void SetColor(GameObject laser, GameObject light ,Color color, int layer)
-    {
-        light.GetComponent<Light>().color = color;
-        laser.GetComponent<LineRenderer>().startColor = color;
-        laser.GetComponent<LineRenderer>().endColor = color;
-        laser.GetComponent<LineRenderer>().sortingOrder = layer;
-    }
-    
 
     void CriticalAngle(Vector2 position, Vector2 inDirection, Vector2 normal, GameObject lastHit, int recursionsRemainging, float n1, float n2, Color color)
     {
