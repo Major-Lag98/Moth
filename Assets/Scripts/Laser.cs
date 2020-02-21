@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class Laser : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class Laser : MonoBehaviour
     public float glassIndex = 1.5f;
     public GameObject laserToSpawn;
 
-    public GameObject pointLight;
+    //public GameObject pointLight;
 
     public Color white = Color.white;
     public Color red = Color.red;
@@ -29,6 +30,8 @@ public class Laser : MonoBehaviour
     public Color yellowOrange = new Color(1, 0.8f, 0.25f, 1);
     public Color orange = new Color(1, 0.6470588f, 0, 1);
     public Color redOrange = new Color(1, 0.3254902f, 0.2862745f, 1);
+
+    
 
     //public Color originColor;
 
@@ -343,10 +346,10 @@ public class Laser : MonoBehaviour
         GameObject light = ObjectPooler.SharedInstance.GetPooledObject("Light");
         if (light != null)
         {
-            light.transform.position = (Vector3)end + new Vector3(0, 0, -0.1f);
+            light.transform.position = (Vector3)end;
             light.transform.rotation = Quaternion.identity;
-            Light l = light.GetComponent<Light>();
-            l.range = range;
+            Light2D l = light.GetComponent<Light2D>();
+            //l.range = range;
             l.intensity = intensity;
             l.color = color;
             light.SetActive(true);
