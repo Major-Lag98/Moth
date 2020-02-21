@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 816024865590549035}
   - component: {fileID: 816024865590549038}
   - component: {fileID: -3213042789384693378}
+  - component: {fileID: 5953139196447467369}
   m_Layer: 0
   m_Name: RedFilter
   m_TagString: Filter
@@ -140,3 +141,25 @@ PolygonCollider2D:
       - {x: -0.25, y: 0.049999997}
       - {x: 0.25, y: 0.049999997}
       - {x: 0.25, y: -0.049999997}
+--- !u!114 &5953139196447467369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 816024865590549034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_HasRenderer: 0
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 
+  m_ShapePath: []
+  m_ShapePathHash: 0
+  m_Mesh: {fileID: 0}
+  m_InstanceId: 0

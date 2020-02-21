@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 841512127958014769}
   - component: {fileID: 2361577558191221958}
   - component: {fileID: 3010396017908048613}
+  - component: {fileID: -6494866741381409040}
   m_Layer: 0
   m_Name: Mirror
   m_TagString: Mirror
@@ -124,3 +125,29 @@ PolygonCollider2D:
       - {x: -0.390625, y: 0.078125}
       - {x: 0.390625, y: 0.078125}
       - {x: 0.390625, y: -0.078125}
+--- !u!114 &-6494866741381409040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 841512127958014771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 00000000
+  m_ShapePath:
+  - {x: -0.390625, y: 0.078125, z: 0}
+  - {x: -0.39062503, y: -0.078125, z: 0}
+  - {x: 0.390625, y: -0.07812501, z: 0}
+  - {x: 0.390625, y: 0.078125, z: 0}
+  m_ShapePathHash: -662473632
+  m_Mesh: {fileID: 0}
+  m_InstanceId: 35800
