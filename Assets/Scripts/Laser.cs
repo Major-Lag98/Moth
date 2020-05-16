@@ -72,62 +72,26 @@ public class Laser : MonoBehaviour
             //Gizmos.DrawLine(position, hit2D.point); //draw a line to it
             //Gizmos.DrawWireSphere(hit2D.point, 0.25f);
 
-            DrawLaser(position, hit2D.point, color);
+            DrawLaser(position, hit2D.point, color, color);
 
             if (hit2D.transform.gameObject.tag == "Receiver")
             {
                 //Debug.Log("Receiver hit");
 
                 Receiver receiver = hit2D.transform.gameObject.GetComponent<Receiver>();
-                if (receiver.isWhite && color == white) //try to make like this ---> if (receiver.color == color) { receiver.charging = true }
-                {
-                    receiver.charging = true;
-                }
-                if (receiver.isRed && color == red)
-                {
-                    receiver.charging = true;
-                }
-                if (receiver.isBlue && color == blue)
-                {
-                    receiver.charging = true;
-                }
-                if (receiver.isYellow && color == yellow)
-                {
-                    receiver.charging = true;
-                }
-                if (receiver.isGreen && color == green)
-                {
-                    receiver.charging = true;
-                }
-                if (receiver.isOrange && color == orange)
-                {
-                    receiver.charging = true;
-                }
-                if (receiver.isPurple && color == purple)
-                {
-                    receiver.charging = true;
-                }
-                if (receiver.isRedPurple && color == redPurple)
-                {
-                    receiver.charging = true;
-                }
-                if (receiver.isRedOrange && color == redOrange)
-                {
-                    receiver.charging = true;
-                }
-                if (receiver.isYellowOrange && color == yellowOrange)
-                {
-                    receiver.charging = true;
-                }
-                if (receiver.isYellowGreen && color == yellowGreen)
-                {
-                    receiver.charging = true;
-                }
-                if (receiver.isBlueGreen && color == blueGreen)
-                {
-                    receiver.charging = true;
-                }
-                if (receiver.isBluePurple && color == bluePurple)
+                if (receiver.isWhite && color == white   //try to make like this ---> if (receiver.color == color) { receiver.charging = true }  //MAYBE USE DICTIONARY??
+                    || receiver.isRed && color == red
+                    || receiver.isBlue && color == blue
+                    || receiver.isYellow && color == yellow
+                    || receiver.isGreen && color == green
+                    || receiver.isOrange && color == orange
+                    || receiver.isPurple && color == purple
+                    || receiver.isRedPurple && color == redPurple
+                    || receiver.isRedOrange && color == redOrange
+                    || receiver.isYellowOrange && color == yellowOrange
+                    || receiver.isYellowGreen && color == yellowGreen
+                    || receiver.isBlueGreen && color == blueGreen
+                    || receiver.isBluePurple && color == bluePurple) 
                 {
                     receiver.charging = true;
                 }
@@ -180,8 +144,8 @@ public class Laser : MonoBehaviour
                     if (!(color == purple && filter.isYellow) && !(color == orange && filter.isBlue) && !(color == green && filter.isRed)) //complemantary colors cant be changed
                     {
 
-
-                        if (filter.isBlue)
+                        Color startColor = color;
+                        if (filter.isBlue) //I feel like i could make this better...
                         {
                             if (color == white)
                             {
@@ -265,7 +229,7 @@ public class Laser : MonoBehaviour
                         position = hit2D.point;
                         RaycastHit2D oppositePosition = FindOpp(position + direction, -direction, hit2D.transform.gameObject);
                         Vector2 oppPos = oppositePosition.point;
-                        DrawLaser(position, oppPos, color);
+                        DrawLaser(position, oppPos, startColor, color);
                         DrawPredictedReflection(oppPos + direction * 0.01f, direction, --recursionsRemaing, color);
                     }
                 }
@@ -274,7 +238,7 @@ public class Laser : MonoBehaviour
         else //nothing hit
         {
             //Gizmos.DrawLine(position, position + direction * maxStepDistance);
-            DrawLaser(position, position + direction * maxStepDistance, color);
+            DrawLaser(position, position + direction * maxStepDistance, color, color);
         }
     }
     
@@ -295,7 +259,7 @@ public class Laser : MonoBehaviour
         RaycastHit2D oppositePosition = FindOpp(point + refractioDirection, -refractioDirection, lastHit);
         Vector2 exitPosition = oppositePosition.point;
         Vector2 exitNormal = oppositePosition.normal;
-        DrawLaser(point, exitPosition, color);
+        DrawLaser(point, exitPosition, color, color);
 
         //end entry refraction
         //begin exit refraction
@@ -326,7 +290,7 @@ public class Laser : MonoBehaviour
             //end exit refraction
         }
     }
-    void DrawLaser(Vector2 start, Vector2 end, Color color)
+    void DrawLaser(Vector2 start, Vector2 end, Color startColor, Color endColor)
     {
 
         GameObject laser = ObjectPooler.SharedInstance.GetPooledObject("Laser");
@@ -338,8 +302,8 @@ public class Laser : MonoBehaviour
             LineRenderer lr = laser.GetComponent<LineRenderer>();
             lr.SetPosition(0, start);
             lr.SetPosition(1, end);
-            lr.startColor = color;
-            lr.endColor = color;
+            lr.startColor = startColor;
+            lr.endColor = endColor;
             laser.SetActive(true);
         }
 
@@ -351,7 +315,7 @@ public class Laser : MonoBehaviour
             Light2D l = light.GetComponent<Light2D>();
             //l.range = range;
             l.intensity = intensity;
-            l.color = color;
+            l.color = endColor;
             light.SetActive(true);
         }
     }
@@ -362,7 +326,7 @@ public class Laser : MonoBehaviour
         RaycastHit2D oppositeSide = FindOpp(position + reflectDirection, -reflectDirection, lastHit);
         Vector2 exitPosition = oppositeSide.point;
         Vector2 exitNormal = -oppositeSide.normal;
-        DrawLaser(position, exitPosition, color);
+        DrawLaser(position, exitPosition, color, color);
 
         float exit_angleOfIncidence = Vector2.Angle(exitNormal, -reflectDirection);
         if (exit_angleOfIncidence > Mathf.Asin(airIndex / glassIndex) * Mathf.Rad2Deg) //critical angle formula
