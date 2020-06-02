@@ -15,6 +15,7 @@ TagManager:
   - Moth
   - Light
   - Filter
+  - Lens
   layers:
   - Default
   - TransparentFX

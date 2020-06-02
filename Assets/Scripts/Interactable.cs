@@ -10,6 +10,8 @@ public class Interactable : MonoBehaviour
     bool isBeingDragged = false;
     bool isBeingRotated = false;
 
+    
+
     // Update is called once per frame
     void Update()
     {

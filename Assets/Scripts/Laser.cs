@@ -43,8 +43,9 @@ public class Laser : MonoBehaviour
         }*/
     }
 
+   
 
-    private void Update()
+    private void OnDrawGizmos()
     {
         if (!Application.isPlaying)
         {
@@ -98,7 +99,7 @@ public class Laser : MonoBehaviour
 
 
             }
-            if (hit2D.transform.gameObject.tag == "Mirror") //mirror hit. set new pos where hit. reflect angle and make that new direction
+            else if (hit2D.transform.gameObject.tag == "Mirror") //mirror hit. set new pos where hit. reflect angle and make that new direction
             {
                 if (recursionsRemaing > 0)
                 {
@@ -111,7 +112,7 @@ public class Laser : MonoBehaviour
                 }
 
             }
-            if (hit2D.transform.gameObject.tag == "Splitter") //reflect and go ahead
+            else if (hit2D.transform.gameObject.tag == "Splitter") //reflect and go ahead
             {
                 
                 //Debug.Log("Splitter hit");
@@ -123,7 +124,12 @@ public class Laser : MonoBehaviour
                     DrawPredictedReflection(position, direction, --recursionsRemaing, color); //reflect too
                 }
             }
-            if (hit2D.transform.gameObject.tag == "Prism")
+            else if (hit2D.transform.gameObject.tag == "Lens")
+            {
+                //Debug.Log("Lens Hit...");
+                Refract(hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaing, airIndex, glassIndex, color);
+            }
+            else if (hit2D.transform.gameObject.tag == "Prism")
             {
                 
                 if (recursionsRemaing > 0 && color == white)
@@ -135,7 +141,7 @@ public class Laser : MonoBehaviour
                 }
                 else Refract(hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaing, airIndex, glassIndex, color);
             }
-            if (hit2D.transform.gameObject.tag == "Filter")
+            else if (hit2D.transform.gameObject.tag == "Filter")
             {
                 Filter filter = hit2D.transform.GetComponent<Filter>();
 
@@ -265,8 +271,28 @@ public class Laser : MonoBehaviour
         //begin exit refraction
 
         exitNormal = -exitNormal;
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(exitPosition - exitNormal * .1f, exitPosition + exitNormal * .1f);
         float exit_angleOfIncidence = Vector2.Angle(exitNormal, -refractioDirection);
-        //Debug.Log("Exit angle of incidence = " + exit_angleOfIncidence);
+
+
+
+        //DEBUG TO DRAW LINE EQUAL TO ANGLE OF INCIDENCE
+        Vector3 testPoint = exitPosition + exitNormal * .1f;
+        Vector3 pivot = exitPosition;
+        Vector3 angles = new Vector3(0, 0, -exit_angleOfIncidence);
+
+        Vector3 dir = testPoint - pivot;
+        dir = Quaternion.Euler(angles) * dir;
+        testPoint = dir + pivot;
+        Gizmos.DrawLine(exitPosition, testPoint);
+        //
+
+        
+
+
+
+        Debug.Log("Exit angle of incidence = " + exit_angleOfIncidence);
         if (exit_angleOfIncidence > Mathf.Asin(n1 / n2) * Mathf.Rad2Deg) //critical angle formula
         {
             CriticalAngle(exitPosition, refractioDirection, exitNormal, lastHit, recursionsRemainging, n1, n2, color);
@@ -275,7 +301,17 @@ public class Laser : MonoBehaviour
         {
 
             float exit_angleOfRefraction = Mathf.Asin((n2 * Mathf.Sin(exit_angleOfIncidence * Mathf.Deg2Rad)) / n1) * Mathf.Rad2Deg; //snells law
-            //Debug.Log("Exit angle of refraction = " + exit_angleOfRefraction);
+
+            //
+            testPoint = exitPosition - exitNormal * 0.1f;
+            angles = new Vector3(0,0, - exit_angleOfRefraction);
+            dir = testPoint - pivot;
+            dir = Quaternion.Euler(angles) * dir;
+            testPoint = dir + pivot;
+            Gizmos.DrawLine(exitPosition, testPoint);
+            //
+
+            Debug.Log("Exit angle of refraction = " + exit_angleOfRefraction);
             Vector2 exit_yVector = Vector3.Cross(Vector3.Cross(refractioDirection, exitNormal), exitNormal);
             Vector2 exit_refractionX = -exitNormal * Mathf.Cos(exit_angleOfRefraction * Mathf.Deg2Rad);
             Vector2 exit_refractionY = -(exit_yVector * Mathf.Sin(exit_angleOfRefraction * Mathf.Deg2Rad));
@@ -286,6 +322,7 @@ public class Laser : MonoBehaviour
             if (recursionsRemainging > 0) //we exited the polygon
             {
                 DrawPredictedReflection(exitPosition + exit_refractionVector * 0.01f, exit_refractionVector, --recursionsRemainging, color);
+                //DrawPredictedReflection(exitPosition + (Vector2)dir * 0.01f, dir, --recursionsRemainging, color);
             }
             //end exit refraction
         }

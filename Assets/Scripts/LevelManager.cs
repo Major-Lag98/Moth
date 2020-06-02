@@ -46,15 +46,16 @@ public class LevelManager : MonoBehaviour
         Receiver[] receivers = FindObjectsOfType<Receiver>() as Receiver[];
         foreach(Receiver receiver in receivers)
         {
-            if (receiver.charged != true) //if there exists a receiver that isnt charged, then we havent won
+            Debug.Log(receivers.Length);
+            if (receiver.charged != true) //if there exists a receiver that isnt charged, we have not won
             {
                 winCondMet = false;
                 break;
             }
         }
-        if (winCondMet)
+        if (winCondMet && receivers.Length != 0)
         {
-            Debug.Log("Win condition met");
+            
             hasWon = true;
         }
     }
