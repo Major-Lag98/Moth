@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2908960401203854935}
   - component: {fileID: 2463026384126057923}
-  - component: {fileID: 5687948214935888634}
+  - component: {fileID: 3658154542830953111}
   m_Layer: 0
   m_Name: LaserEmitter
   m_TagString: Untagged
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5687948214935888634
+--- !u!114 &3658154542830953111
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -92,23 +92,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1221654969225496057}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57b1f7a9b14cd0a40b2ed0ff09577152, type: 3}
+  m_Script: {fileID: 11500000, guid: 480f04155bb6b824e9841978e3dac5cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxRecursions: 10
   maxStepDistance: 200
-  intensity: 2
-  range: 3
-  glassIndex: 1.1
+  lightIntensity: 1
+  glassIndex: 1.5
   laserToSpawn: {fileID: 1282231757911092644, guid: abe51b2ab3299fc4ab7d03902e9b9d58,
-    type: 3}
-  pointLight: {fileID: 7861143257451256593, guid: 9a1fb21488b594744b0ed313a189d568,
     type: 3}
   white: {r: 1, g: 1, b: 1, a: 1}
   red: {r: 1, g: 0, b: 0, a: 1}
   redPurple: {r: 0.5019608, g: 0, b: 0.2509804, a: 1}
   purple: {r: 0.5019608, g: 0, b: 0.5019608, a: 1}
-  bluePurple: {r: 0.413, g: 0.1686275, b: 0.8862745, a: 1}
+  bluePurple: {r: 0.5411765, g: 0.1686275, b: 0.8862745, a: 1}
   blue: {r: 0, g: 0, b: 1, a: 1}
   blueGreen: {r: 0.05098039, g: 0.5960785, b: 0.7294118, a: 1}
   green: {r: 0, g: 1, b: 0, a: 1}
