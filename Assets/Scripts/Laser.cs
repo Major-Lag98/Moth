@@ -8,14 +8,14 @@ public class Laser : MonoBehaviour
 
     public int maxRecursions = 10;
     public float maxStepDistance = 200;
-    public float intensity = 5;
-    public float range = 1;
+
+    //public float lightIntensity = 1;
 
     float airIndex = 1.0f;
     public float glassIndex = 1.5f;
+
     public GameObject laserToSpawn;
 
-    //public GameObject pointLight;
 
     public Color white = Color.white;
     public Color red = Color.red;
@@ -31,29 +31,17 @@ public class Laser : MonoBehaviour
     public Color orange = new Color(1, 0.6470588f, 0, 1);
     public Color redOrange = new Color(1, 0.3254902f, 0.2862745f, 1);
 
-    
 
-    //public Color originColor;
-
-    private void Start()
-    {
-        /*if (originColor == null)
-        {
-            originColor = white;
-        }*/
-    }
-
-   
-
-    private void OnDrawGizmos()
+    // Update is called once per frame
+    private void Update()
     {
         if (!Application.isPlaying)
         {
             return;
         }
         foreach (GameObject laser in GameObject.FindGameObjectsWithTag("Laser")) //every update redraw laser
-            //Destroy(laser);
             laser.SetActive(false);
+        
         foreach (GameObject light in GameObject.FindGameObjectsWithTag("Light")) //every update redraw pointlights
             light.SetActive(false);
 
@@ -61,20 +49,17 @@ public class Laser : MonoBehaviour
         DrawPredictedReflection(this.transform.position, this.transform.up, maxRecursions, white);
     }
 
-    void DrawPredictedReflection(Vector2 position, Vector2 direction, int recursionsRemaing, Color color)// int reflectionsRemaining, int splitsRemaining)
+    void DrawPredictedReflection(Vector2 origin, Vector2 direction, int recursionsRemaining, Color color)// int reflectionsRemaining, int splitsRemaining)
     {
-        
-        var gizmoHue = (recursionsRemaing / (this.maxRecursions + 1f));
-        //Gizmos.color = Color.HSVToRGB(gizmoHue, 1, 1);
-        RaycastHit2D hit2D = Physics2D.Raycast(position, direction, maxStepDistance);
 
-        if (hit2D) //did we hit somthing?
+        var gizmoHue = (recursionsRemaining / (this.maxRecursions + 1f));
+
+        RaycastHit2D hit2D = Physics2D.Raycast(origin, direction, maxStepDistance);
+
+        if (hit2D && recursionsRemaining > 0) //did we hit somthing?
         {
-            //Gizmos.DrawLine(position, hit2D.point); //draw a line to it
-            //Gizmos.DrawWireSphere(hit2D.point, 0.25f);
 
-            DrawLaser(position, hit2D.point, color, color);
-
+            DrawLaser(origin, hit2D.point, color, color); //draw a line to it
             if (hit2D.transform.gameObject.tag == "Receiver")
             {
                 //Debug.Log("Receiver hit");
@@ -92,7 +77,7 @@ public class Laser : MonoBehaviour
                     || receiver.isYellowOrange && color == yellowOrange
                     || receiver.isYellowGreen && color == yellowGreen
                     || receiver.isBlueGreen && color == blueGreen
-                    || receiver.isBluePurple && color == bluePurple) 
+                    || receiver.isBluePurple && color == bluePurple)
                 {
                     receiver.charging = true;
                 }
@@ -101,45 +86,41 @@ public class Laser : MonoBehaviour
             }
             else if (hit2D.transform.gameObject.tag == "Mirror") //mirror hit. set new pos where hit. reflect angle and make that new direction
             {
-                if (recursionsRemaing > 0)
-                {
                     //Debug.Log("Mirror Hit");
                     direction = Vector2.Reflect(direction, hit2D.normal);
-                    position = hit2D.point + direction * 0.01f;
+                    origin = hit2D.point + direction * 0.01f;
 
 
-                    DrawPredictedReflection(position, direction, --recursionsRemaing, color);
-                }
+                    DrawPredictedReflection(origin, direction, --recursionsRemaining, color);
+                
 
             }
             else if (hit2D.transform.gameObject.tag == "Splitter") //reflect and go ahead
             {
+
                 
-                //Debug.Log("Splitter hit");
-                if (recursionsRemaing > 0)//go ahead
-                {
-                    Refract(hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaing, airIndex, glassIndex, color); //enter and refract
+                    Refract(origin, hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaining, airIndex, glassIndex,color, color); //enter and refract
                     direction = Vector2.Reflect(direction, hit2D.normal);
-                    position = hit2D.point + direction * 0.01f;
-                    DrawPredictedReflection(position, direction, --recursionsRemaing, color); //reflect too
-                }
+                    origin = hit2D.point + direction * 0.01f;
+                    DrawPredictedReflection(origin, direction, --recursionsRemaining, color); //reflect too
+                
             }
             else if (hit2D.transform.gameObject.tag == "Lens")
             {
-                //Debug.Log("Lens Hit...");
-                Refract(hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaing, airIndex, glassIndex, color);
+                Refract(origin, hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaining, airIndex, glassIndex,color, color);
             }
             else if (hit2D.transform.gameObject.tag == "Prism")
             {
-                
-                if (recursionsRemaing > 0 && color == white)
+
+                if (color == white)
                 {
-                    Refract(hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaing, airIndex, glassIndex, red);
-                    Refract(hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaing, airIndex, glassIndex + 0.1f, blue);
-                    Refract(hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaing, airIndex, glassIndex + 0.05f, green); 
-                    //Refract();
+                    Refract(origin, hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaining, airIndex, glassIndex - .1f,color, red, 0.4f);
+                    Refract(origin, hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaining, airIndex, glassIndex - .06f,color,  orange, 0.4f);
+                    Refract(origin, hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaining, airIndex, glassIndex - .03f,color, yellow, 0.4f);
+                    Refract(origin, hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaining, airIndex, glassIndex, color, green, 0.4f);
+                    Refract(origin, hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaining, airIndex, glassIndex + .03f,color, blue, 0.4f);
+                    Refract(origin, hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaining, airIndex, glassIndex + .06f,color, purple, 0.4f);
                 }
-                else Refract(hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaing, airIndex, glassIndex, color);
             }
             else if (hit2D.transform.gameObject.tag == "Filter")
             {
@@ -232,102 +213,22 @@ public class Laser : MonoBehaviour
                                 color = yellowOrange;
                             }
                         }
-                        position = hit2D.point;
-                        RaycastHit2D oppositePosition = FindOpp(position + direction, -direction, hit2D.transform.gameObject);
+                        origin = hit2D.point;
+                        RaycastHit2D oppositePosition = FindOpp(origin + direction, -direction, hit2D.transform.gameObject);
                         Vector2 oppPos = oppositePosition.point;
-                        DrawLaser(position, oppPos, startColor, color);
-                        DrawPredictedReflection(oppPos + direction * 0.01f, direction, --recursionsRemaing, color);
+                        DrawLaser(origin, oppPos, startColor, color);
+                        DrawPredictedReflection(oppPos + direction * 0.01f, direction, --recursionsRemaining, color);
                     }
                 }
             }
         }
         else //nothing hit
         {
-            //Gizmos.DrawLine(position, position + direction * maxStepDistance);
-            DrawLaser(position, position + direction * maxStepDistance, color, color);
+            DrawLaser(origin, origin + direction * maxStepDistance, color, color);
         }
     }
-    
 
-    void Refract(Vector2 normal, Vector2 direction, Vector2 point, GameObject lastHit, int recursionsRemainging, float n1, float n2, Color color)
-    {
-        float angleOfIncidence = Vector2.Angle(normal, -direction);
-        //Debug.Log("Angle of incidence = " + angleOfIncidence);
-        float angleOfRefraction = Mathf.Asin((n1 * Mathf.Sin(angleOfIncidence * Mathf.Deg2Rad)) / n2) * Mathf.Rad2Deg; //snells law
-        //Debug.Log("Angle of refraction = " + angleOfRefraction);
-        Vector2 yVector = Vector3.Cross(Vector3.Cross(direction, normal), normal);//perpindicular to normal
-        Vector2 refractionX = -normal * Mathf.Cos(angleOfRefraction * Mathf.Deg2Rad);
-        Vector2 refractionY = -(yVector * Mathf.Sin(angleOfRefraction * Mathf.Deg2Rad));
-        Vector2 refractioDirection = refractionX + refractionY; //direction of refraction
-
-        //find exit position
-
-        RaycastHit2D oppositePosition = FindOpp(point + refractioDirection, -refractioDirection, lastHit);
-        Vector2 exitPosition = oppositePosition.point;
-        Vector2 exitNormal = oppositePosition.normal;
-        DrawLaser(point, exitPosition, color, color);
-
-        //end entry refraction
-        //begin exit refraction
-
-        exitNormal = -exitNormal;
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(exitPosition - exitNormal * .1f, exitPosition + exitNormal * .1f);
-        float exit_angleOfIncidence = Vector2.Angle(exitNormal, -refractioDirection);
-
-
-
-        //DEBUG TO DRAW LINE EQUAL TO ANGLE OF INCIDENCE
-        Vector3 testPoint = exitPosition + exitNormal * .1f;
-        Vector3 pivot = exitPosition;
-        Vector3 angles = new Vector3(0, 0, -exit_angleOfIncidence);
-
-        Vector3 dir = testPoint - pivot;
-        dir = Quaternion.Euler(angles) * dir;
-        testPoint = dir + pivot;
-        Gizmos.DrawLine(exitPosition, testPoint);
-        //
-
-        
-
-
-
-        Debug.Log("Exit angle of incidence = " + exit_angleOfIncidence);
-        if (exit_angleOfIncidence > Mathf.Asin(n1 / n2) * Mathf.Rad2Deg) //critical angle formula
-        {
-            CriticalAngle(exitPosition, refractioDirection, exitNormal, lastHit, recursionsRemainging, n1, n2, color);
-        }
-        else
-        {
-
-            float exit_angleOfRefraction = Mathf.Asin((n2 * Mathf.Sin(exit_angleOfIncidence * Mathf.Deg2Rad)) / n1) * Mathf.Rad2Deg; //snells law
-
-            //
-            testPoint = exitPosition - exitNormal * 0.1f;
-            angles = new Vector3(0,0, - exit_angleOfRefraction);
-            dir = testPoint - pivot;
-            dir = Quaternion.Euler(angles) * dir;
-            testPoint = dir + pivot;
-            Gizmos.DrawLine(exitPosition, testPoint);
-            //
-
-            Debug.Log("Exit angle of refraction = " + exit_angleOfRefraction);
-            Vector2 exit_yVector = Vector3.Cross(Vector3.Cross(refractioDirection, exitNormal), exitNormal);
-            Vector2 exit_refractionX = -exitNormal * Mathf.Cos(exit_angleOfRefraction * Mathf.Deg2Rad);
-            Vector2 exit_refractionY = -(exit_yVector * Mathf.Sin(exit_angleOfRefraction * Mathf.Deg2Rad));
-            Vector2 exit_refractionVector = exit_refractionX + exit_refractionY;
-
-            //Gizmos.DrawLine(exitPosition, exitPosition + exit_refractionVector * 2);
-
-            if (recursionsRemainging > 0) //we exited the polygon
-            {
-                DrawPredictedReflection(exitPosition + exit_refractionVector * 0.01f, exit_refractionVector, --recursionsRemainging, color);
-                //DrawPredictedReflection(exitPosition + (Vector2)dir * 0.01f, dir, --recursionsRemainging, color);
-            }
-            //end exit refraction
-        }
-    }
-    void DrawLaser(Vector2 start, Vector2 end, Color startColor, Color endColor)
+    void DrawLaser(Vector2 start, Vector2 end, Color startColor, Color endColor, float lightIntensity = 1.0f)
     {
 
         GameObject laser = ObjectPooler.SharedInstance.GetPooledObject("Laser");
@@ -343,7 +244,6 @@ public class Laser : MonoBehaviour
             lr.endColor = endColor;
             laser.SetActive(true);
         }
-
         GameObject light = ObjectPooler.SharedInstance.GetPooledObject("Light");
         if (light != null)
         {
@@ -351,39 +251,141 @@ public class Laser : MonoBehaviour
             light.transform.rotation = Quaternion.identity;
             Light2D l = light.GetComponent<Light2D>();
             //l.range = range;
-            l.intensity = intensity;
+            l.intensity = lightIntensity;
             l.color = endColor;
             light.SetActive(true);
         }
     }
 
-    void CriticalAngle(Vector2 position, Vector2 inDirection, Vector2 normal, GameObject lastHit, int recursionsRemainging, float n1, float n2, Color color)
+    void Refract(Vector2 origin, Vector2 normal, Vector2 direction, Vector2 point, GameObject lastHit, int recursionsRemainging, float n1, float n2, Color startColor, Color endColor, float lightIntensity = 1.0f) //entering a lens and exiting
     {
-        Vector2 reflectDirection = Vector2.Reflect(inDirection, normal);
-        RaycastHit2D oppositeSide = FindOpp(position + reflectDirection, -reflectDirection, lastHit);
-        Vector2 exitPosition = oppositeSide.point;
-        Vector2 exitNormal = -oppositeSide.normal;
-        DrawLaser(position, exitPosition, color, color);
+        float angleOfIncidence = Vector2.Angle(normal, -direction);
+        //Debug.Log("Angle of incidence = " + angleOfIncidence);
+        float angleOfRefraction = Mathf.Asin((n1 * Mathf.Sin(angleOfIncidence * Mathf.Deg2Rad)) / n2) * Mathf.Rad2Deg; //snells law
+        //Debug.Log("Angle of refraction = " + angleOfRefraction);
 
-        float exit_angleOfIncidence = Vector2.Angle(exitNormal, -reflectDirection);
-        if (exit_angleOfIncidence > Mathf.Asin(airIndex / glassIndex) * Mathf.Rad2Deg) //critical angle formula
+        Vector2 normalTestPoint = point + normal * 0.1f;
+
+        //Gizmos.color = Color.blue;
+        //Gizmos.DrawLine(normalTestPoint, point - normal * 0.1f); //visualize normal
+
+
+
+        if ((point.x - origin.x) * (normalTestPoint.y - origin.y) - (point.y - origin.y) * (normalTestPoint.x - origin.x) < 0) //cross product, check which side the normal is relitive to the incoming laser
         {
-            CriticalAngle(exitPosition, reflectDirection, exitNormal, lastHit, recursionsRemainging, n1, n2, color);
+            angleOfRefraction = -angleOfRefraction;
+        }
+
+
+        direction = RotatePointByDeg(point, -normal, angleOfRefraction); //get direction by rotating a test point about the origin (-normal because were refracting inside the lens so we rotate from that point being 0 degrees)
+
+        RaycastHit2D oppositeSide = FindOpp(point +  direction, -direction, lastHit);
+
+
+
+        //prep for exit//
+
+        Vector2 potentialExitPoint = oppositeSide.point; //prep for exit
+        DrawLaser(point, potentialExitPoint, startColor, endColor, lightIntensity); //draw our laser from last point to current point
+        normal = oppositeSide.normal;
+
+         
+
+        angleOfIncidence = Vector2.Angle(normal, direction);
+        angleOfRefraction = Mathf.Asin((n2 * Mathf.Sin(angleOfIncidence * Mathf.Deg2Rad)) / n1) * Mathf.Rad2Deg; //snells law, swap n2 and n1 because were exiting
+        origin = point;
+        //Gizmos.DrawLine(potentialExitPoint + normal * 0.1f, potentialExitPoint - normal * 0.1f);//visualize normal
+        //CHECK FOR CRITICAL ANGLE//
+        if (angleOfIncidence > Mathf.Asin(n1 / n2) * Mathf.Rad2Deg) //critical angle formula
+        {
+            CriticalAngle(potentialExitPoint, direction, normal, lastHit, --recursionsRemainging, n1, n2,  endColor, lightIntensity);
         }
         else
         {
-            float exit_angleOfRefraction = Mathf.Asin((glassIndex * Mathf.Sin(exit_angleOfIncidence * Mathf.Deg2Rad)) / airIndex) * Mathf.Rad2Deg;
-            Vector2 exit_yVector = Vector3.Cross(Vector3.Cross(reflectDirection, exitNormal), exitNormal);
-            Vector2 exit_refractionX = -exitNormal * Mathf.Cos(exit_angleOfRefraction * Mathf.Deg2Rad);
-            Vector2 exit_refractionY = -(exit_yVector * Mathf.Sin(exit_angleOfRefraction * Mathf.Deg2Rad));
-            Vector2 exit_refractionVector = exit_refractionX + exit_refractionY;
+            //START EXIT//
+
+            //Gizmos.DrawLine(potentialExitPoint + normal * 0.1f, potentialExitPoint - normal * 0.1f);//visualize normal
+
+            normalTestPoint = potentialExitPoint + normal * 0.1f;
+
+            if ((potentialExitPoint.x - origin.x) * (normalTestPoint.y - origin.y) - (potentialExitPoint.y - origin.y) * (normalTestPoint.x - origin.x) > 0) //cross product, check which side the normal is relitive to the incoming laser
+            {
+                angleOfRefraction = -angleOfRefraction;
+            }
+
+            direction = RotatePointByDeg(potentialExitPoint, normal, angleOfRefraction);
+
+            //Exit done we did it yay!
 
             if (recursionsRemainging > 0)
             {
-                DrawPredictedReflection(exitPosition + exit_refractionVector * 0.01f, exit_refractionVector, --recursionsRemainging, color);
+                DrawPredictedReflection(potentialExitPoint + direction * 0.01f, direction, --recursionsRemainging, endColor);
             }
         }
+
+
+        
     }
+
+    void CriticalAngle(Vector2 origin, Vector2 direction, Vector2 normal, GameObject lastHit, int recursionsRemainging, float n1, float n2, Color color, float lightIntensity)
+    {
+        //Debug.Log("Critical angle...");
+        //Gizmos.DrawLine(origin + normal * 0.1f, origin - normal * 0.1f);//visualize normal
+
+        direction = Vector2.Reflect(direction, normal);
+        RaycastHit2D oppositeSide = FindOpp(origin + direction, -direction, lastHit);
+        Vector2 potentialExitPoint = oppositeSide.point;
+        normal = oppositeSide.normal;
+        Vector2 normalTestPoint = potentialExitPoint + normal * 0.1f;
+        //Gizmos.color = Color.red;
+        //Gizmos.DrawLine(origin, oppositeSide.point); //reflection visualized
+        DrawLaser(origin, potentialExitPoint, color, color, 1);
+        //Gizmos.color = Color.blue;
+        //Gizmos.DrawLine(potentialExitPoint + normal * 0.1f, potentialExitPoint - normal * 0.1f); //visualize normal
+
+        float angleOfIncidence = Vector2.Angle(normal, direction);
+        //Debug.Log("Angle of incidence = " + angleOfIncidence);
+        
+
+        if (angleOfIncidence > Mathf.Asin(n1 / n2) * Mathf.Rad2Deg) //critical angle formula
+        {
+            //Debug.Log("Double Critical angle...");
+            CriticalAngle(potentialExitPoint, direction, normal, lastHit, --recursionsRemainging, n1, n2, color, lightIntensity - 0.1f); //decrease light intesity so it doesnt become unbarable with multiple
+        }
+        else
+        {
+            float angleOfRefraction = Mathf.Asin((n2 * Mathf.Sin(angleOfIncidence * Mathf.Deg2Rad)) / n1) * Mathf.Rad2Deg; //snells law
+            //Debug.Log("Angle of refraction = " + angleOfRefraction);
+
+            if ((potentialExitPoint.x - origin.x) * (normalTestPoint.y - origin.y) - (potentialExitPoint.y - origin.y) * (normalTestPoint.x - origin.x) > 0) //cross product, check which side the normal is relitive to the incoming laser
+            {
+                angleOfRefraction = -angleOfRefraction;
+            }
+
+            direction = RotatePointByDeg(potentialExitPoint, normal, angleOfRefraction);
+
+            //Gizmos.color = Color.red;
+            //Gizmos.DrawLine(potentialExitPoint, potentialExitPoint + direction);
+
+            if (recursionsRemainging > 0)
+            {
+                DrawPredictedReflection(potentialExitPoint + direction * 0.01f, direction, --recursionsRemainging, color);
+            }
+
+        }
+    }
+
+
+    Vector3 RotatePointByDeg(Vector2 origin, Vector2 normal, float angle) //rotate a point about its pivot and get its direction from its origin
+    {
+        Vector3 pointToRotate = origin + normal;
+        Vector3 pivot = origin;
+        Vector3 angles = new Vector3(0, 0, angle);
+        Vector3 dir = pointToRotate - pivot;
+        dir = Quaternion.Euler(angles) * dir;
+        return dir;
+    }
+
     RaycastHit2D FindOpp(Vector2 startPos, Vector2 reverseDirection, GameObject lastHit)
     {
         RaycastHit2D exitHit = new RaycastHit2D();
@@ -399,6 +401,3 @@ public class Laser : MonoBehaviour
         return exitHit;
     }
 }
-
-
-
