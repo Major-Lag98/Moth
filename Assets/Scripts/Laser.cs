@@ -1,40 +1,58 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 
 public class Laser : MonoBehaviour
 {
 
-    public int maxRecursions = 10;
-    public float maxStepDistance = 200;
+    [SerializeField]
+    int _maxRecursions = 10;
+    [SerializeField]
+    float _maxStepDistance = 200;
 
-    //public float lightIntensity = 1;
 
-    float airIndex = 1.0f;
-    public float glassIndex = 1.5f;
+    float _airIndex = 1.0f;
+    [SerializeField]
+    float _glassIndex = 1.5f;
+    
+
+    [SerializeField]
+    Color white = Color.white;
+    [SerializeField]
+    Color red = Color.red;
+    [SerializeField]
+    Color redPurple = new Color(0.5019608f, 0, 0.2509804f, 1);
+    [SerializeField]
+    Color purple = new Color(0.5019608f, 0, 0.5019608f, 1);
+    [SerializeField]
+    Color bluePurple = new Color(0.5411765f, 0.1686275f, 0.8862745f, 1);
+    [SerializeField]
+    Color blue = Color.blue;
+    [SerializeField]
+    Color blueGreen = new Color(0.05098039f, 0.5960785f, 0.7294118f, 1);
+    [SerializeField]
+    Color green = Color.green;
+    [SerializeField]
+    Color yellowGreen = new Color(0.6039216f, 0.8039216f, 0.1960784f, 1);
+    [SerializeField]
+    Color yellow = Color.yellow;
+    [SerializeField]
+    Color yellowOrange = new Color(1, 0.8f, 0.25f, 1);
+    [SerializeField]
+    Color orange = new Color(1, 0.6470588f, 0, 1);
+    [SerializeField]
+    Color redOrange = new Color(1, 0.3254902f, 0.2862745f, 1);
+
 
     public GameObject laserToSpawn;
-
-
-    public Color white = Color.white;
-    public Color red = Color.red;
-    public Color redPurple = new Color(0.5019608f, 0, 0.2509804f, 1);
-    public Color purple = new Color(0.5019608f, 0, 0.5019608f, 1);
-    public Color bluePurple = new Color(0.5411765f, 0.1686275f, 0.8862745f, 1);
-    public Color blue = Color.blue;
-    public Color blueGreen = new Color(0.05098039f, 0.5960785f, 0.7294118f, 1);
-    public Color green = Color.green;
-    public Color yellowGreen = new Color(0.6039216f, 0.8039216f, 0.1960784f, 1);
-    public Color yellow = Color.yellow;
-    public Color yellowOrange = new Color(1, 0.8f, 0.25f, 1);
-    public Color orange = new Color(1, 0.6470588f, 0, 1);
-    public Color redOrange = new Color(1, 0.3254902f, 0.2862745f, 1);
+    public MyColor.ColorState myCurrentColorState = new MyColor.ColorState();
 
 
     // Update is called once per frame
     private void Update()
     {
+        //myCurrentColorState = MyColor.ColorState.BLUEPURPLE;
+        
+
         if (!Application.isPlaying)
         {
             return;
@@ -46,189 +64,186 @@ public class Laser : MonoBehaviour
             light.SetActive(false);
 
 
-        DrawPredictedReflection(this.transform.position, this.transform.up, maxRecursions, white);
+        DrawPredictedReflection(this.transform.position, this.transform.up, _maxRecursions, myCurrentColorState);
     }
 
-    void DrawPredictedReflection(Vector2 origin, Vector2 direction, int recursionsRemaining, Color color)// int reflectionsRemaining, int splitsRemaining)
+    void DrawPredictedReflection(Vector2 origin, Vector2 direction, int recursionsRemaining, MyColor.ColorState colorState)// int reflectionsRemaining, int splitsRemaining)
     {
 
-        var gizmoHue = (recursionsRemaining / (this.maxRecursions + 1f));
+        var gizmoHue = (recursionsRemaining / (this._maxRecursions + 1f));
 
-        RaycastHit2D hit2D = Physics2D.Raycast(origin, direction, maxStepDistance);
+        RaycastHit2D hit2D = Physics2D.Raycast(origin, direction, _maxStepDistance);
 
         if (hit2D && recursionsRemaining > 0) //did we hit somthing?
         {
 
-            DrawLaser(origin, hit2D.point, color, color); //draw a line to it
+            DrawLaser(origin, hit2D.point, colorState, colorState); //draw a line to it
+
             if (hit2D.transform.gameObject.tag == "Receiver")
             {
-                //Debug.Log("Receiver hit");
 
                 Receiver receiver = hit2D.transform.gameObject.GetComponent<Receiver>();
-                if (receiver.isWhite && color == white   //try to make like this ---> if (receiver.color == color) { receiver.charging = true }  //MAYBE USE DICTIONARY??
-                    || receiver.isRed && color == red
-                    || receiver.isBlue && color == blue
-                    || receiver.isYellow && color == yellow
-                    || receiver.isGreen && color == green
-                    || receiver.isOrange && color == orange
-                    || receiver.isPurple && color == purple
-                    || receiver.isRedPurple && color == redPurple
-                    || receiver.isRedOrange && color == redOrange
-                    || receiver.isYellowOrange && color == yellowOrange
-                    || receiver.isYellowGreen && color == yellowGreen
-                    || receiver.isBlueGreen && color == blueGreen
-                    || receiver.isBluePurple && color == bluePurple)
+                if (receiver.myColor == colorState)
                 {
-                    receiver.charging = true;
+                    receiver.isCharging = true;
                 }
 
-
             }
+
             else if (hit2D.transform.gameObject.tag == "Mirror") //mirror hit. set new pos where hit. reflect angle and make that new direction
             {
-                    //Debug.Log("Mirror Hit");
+                    
                     direction = Vector2.Reflect(direction, hit2D.normal);
                     origin = hit2D.point + direction * 0.01f;
-
-
-                    DrawPredictedReflection(origin, direction, --recursionsRemaining, color);
-                
+                    DrawPredictedReflection(origin, direction, --recursionsRemaining, colorState);
 
             }
+
             else if (hit2D.transform.gameObject.tag == "Splitter") //reflect and go ahead
             {
 
-                
-                    Refract(origin, hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaining, airIndex, glassIndex,color, color); //enter and refract
+                    Refract(origin, hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaining, _airIndex, _glassIndex, colorState, colorState); //enter and refract
                     direction = Vector2.Reflect(direction, hit2D.normal);
                     origin = hit2D.point + direction * 0.01f;
-                    DrawPredictedReflection(origin, direction, --recursionsRemaining, color); //reflect too
+                    DrawPredictedReflection(origin, direction, --recursionsRemaining, colorState); //reflect too
                 
             }
+
             else if (hit2D.transform.gameObject.tag == "Lens")
             {
-                Refract(origin, hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaining, airIndex, glassIndex,color, color);
+
+                Refract(origin, hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaining, _airIndex, _glassIndex, colorState, colorState);
+
             }
             else if (hit2D.transform.gameObject.tag == "Prism")
             {
 
-                if (color == white)
+                if (colorState == MyColor.ColorState.WHITE)
                 {
-                    Refract(origin, hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaining, airIndex, glassIndex - .1f,color, red, 0.4f);
-                    Refract(origin, hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaining, airIndex, glassIndex - .06f,color,  orange, 0.4f);
-                    Refract(origin, hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaining, airIndex, glassIndex - .03f,color, yellow, 0.4f);
-                    Refract(origin, hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaining, airIndex, glassIndex, color, green, 0.4f);
-                    Refract(origin, hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaining, airIndex, glassIndex + .03f,color, blue, 0.4f);
-                    Refract(origin, hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaining, airIndex, glassIndex + .06f,color, purple, 0.4f);
+                    Refract(origin, hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaining, _airIndex, _glassIndex - .1f , colorState, MyColor.ColorState.RED, 0.4f);
+                    Refract(origin, hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaining, _airIndex, _glassIndex - .06f, colorState, MyColor.ColorState.ORANGE, 0.4f);
+                    Refract(origin, hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaining, _airIndex, _glassIndex - .03f, colorState, MyColor.ColorState.YELLOW, 0.4f);
+                    Refract(origin, hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaining, _airIndex, _glassIndex       , colorState, MyColor.ColorState.GREEN, 0.4f);
+                    Refract(origin, hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaining, _airIndex, _glassIndex + .03f, colorState, MyColor.ColorState.BLUE, 0.4f);
+                    Refract(origin, hit2D.normal, direction, hit2D.point, hit2D.transform.gameObject, recursionsRemaining, _airIndex, _glassIndex + .06f, colorState, MyColor.ColorState.PURPLE, 0.4f);
                 }
+
             }
-            else if (hit2D.transform.gameObject.tag == "Filter")
+            else if (hit2D.transform.gameObject.tag == "Filter") // change the state of the color
             {
                 Filter filter = hit2D.transform.GetComponent<Filter>();
 
-                if (color != blueGreen && color != bluePurple && color != redPurple && color != yellowGreen && color != yellowOrange) //tirtiary colors cant be changed
+                if (   colorState != MyColor.ColorState.BLUEGREEN 
+                    && colorState != MyColor.ColorState.BLUEPURPLE 
+                    && colorState != MyColor.ColorState.REDPURPLE 
+                    && colorState != MyColor.ColorState.YELLOWGREEN 
+                    && colorState != MyColor.ColorState.YELLOWORANGE) //tirtiary colors cant be changed
                 {
-                    if (!(color == purple && filter.isYellow) && !(color == orange && filter.isBlue) && !(color == green && filter.isRed)) //complemantary colors cant be changed
+                    if (   !(colorState == MyColor.ColorState.PURPLE && filter.isYellow) 
+                        && !(colorState == MyColor.ColorState.ORANGE && filter.isBlue) 
+                        && !(colorState == MyColor.ColorState.GREEN && filter.isRed)) //complemantary colors cant be changed
                     {
 
-                        Color startColor = color;
+                        MyColor.ColorState startColor = colorState;
                         if (filter.isBlue) //I feel like i could make this better...
                         {
-                            if (color == white)
+
+                            if (colorState == MyColor.ColorState.WHITE)
                             {
-                                color = blue;
+                                colorState = MyColor.ColorState.BLUE;
                             }
-                            else if (color == blue)
+                            else if (colorState == MyColor.ColorState.BLUE)
                             {
-                                color = blue;
+                                colorState = MyColor.ColorState.BLUE;
                             }
-                            else if (color == red)
+                            else if (colorState == MyColor.ColorState.RED)
                             {
-                                color = purple;
+                                colorState = MyColor.ColorState.PURPLE;
                             }
-                            else if (color == yellow)
+                            else if (colorState == MyColor.ColorState.YELLOW)
                             {
-                                color = green;
+                                colorState = MyColor.ColorState.GREEN;
                             }
-                            else if (color == green)
+                            else if (colorState == MyColor.ColorState.GREEN)
                             {
-                                color = blueGreen;
+                                colorState = MyColor.ColorState.BLUEGREEN;
                             }
-                            else if (color == purple)
+                            else if (colorState == MyColor.ColorState.PURPLE)
                             {
-                                color = bluePurple;
+                                colorState = MyColor.ColorState.BLUEPURPLE;
                             }
+
                         }
                         if (filter.isRed)
                         {
-                            if (color == white)
+                            if (colorState == MyColor.ColorState.WHITE)
                             {
-                                color = red;
+                                colorState = MyColor.ColorState.RED;
                             }
-                            else if (color == blue)
+                            else if (colorState == MyColor.ColorState.BLUE)
                             {
-                                color = purple;
+                                colorState = MyColor.ColorState.PURPLE;
                             }
-                            else if (color == red)
+                            else if (colorState == MyColor.ColorState.RED)
                             {
-                                color = red;
+                                colorState = MyColor.ColorState.RED;
                             }
-                            else if (color == yellow)
+                            else if (colorState == MyColor.ColorState.YELLOW)
                             {
-                                color = orange;
+                                colorState = MyColor.ColorState.ORANGE;
                             }
-                            else if (color == orange)
+                            else if (colorState == MyColor.ColorState.ORANGE)
                             {
-                                color = redOrange;
+                                colorState = MyColor.ColorState.REDORANGE;
                             }
-                            else if (color == purple)
+                            else if (colorState == MyColor.ColorState.PURPLE)
                             {
-                                color = redPurple;
+                                colorState = MyColor.ColorState.REDPURPLE;
                             }
                         }
                         if (filter.isYellow)
                         {
-                            if (color == white)
+                            if (colorState == MyColor.ColorState.WHITE)
                             {
-                                color = yellow;
+                                colorState = MyColor.ColorState.YELLOW;
                             }
-                            else if (color == blue)
+                            else if (colorState == MyColor.ColorState.BLUE)
                             {
-                                color = green;
+                                colorState = MyColor.ColorState.GREEN;
                             }
-                            else if (color == red)
+                            else if (colorState == MyColor.ColorState.RED)
                             {
-                                color = orange;
+                                colorState = MyColor.ColorState.ORANGE;
                             }
-                            else if (color == yellow)
+                            else if (colorState == MyColor.ColorState.YELLOW)
                             {
-                                color = yellow;
+                                colorState = MyColor.ColorState.YELLOW;
                             }
-                            else if (color == green)
+                            else if (colorState == MyColor.ColorState.GREEN)
                             {
-                                color = yellowGreen;
+                                colorState = MyColor.ColorState.YELLOWGREEN;
                             }
-                            else if (color == orange)
+                            else if (colorState == MyColor.ColorState.ORANGE)
                             {
-                                color = yellowOrange;
+                                colorState = MyColor.ColorState.YELLOWORANGE;
                             }
                         }
                         origin = hit2D.point;
                         RaycastHit2D oppositePosition = FindOpp(origin + direction, -direction, hit2D.transform.gameObject);
                         Vector2 oppPos = oppositePosition.point;
-                        DrawLaser(origin, oppPos, startColor, color);
-                        DrawPredictedReflection(oppPos + direction * 0.01f, direction, --recursionsRemaining, color);
+                        DrawLaser(origin, oppPos, startColor, colorState);
+                        DrawPredictedReflection(oppPos + direction * 0.01f, direction, --recursionsRemaining, colorState);
                     }
                 }
             }
         }
         else //nothing hit
         {
-            DrawLaser(origin, origin + direction * maxStepDistance, color, color);
+            DrawLaser(origin, origin + direction * _maxStepDistance, colorState, colorState);
         }
     }
 
-    void DrawLaser(Vector2 start, Vector2 end, Color startColor, Color endColor, float lightIntensity = 1.0f)
+    void DrawLaser(Vector2 start, Vector2 end, MyColor.ColorState startColor, MyColor.ColorState endColor, float lightIntensity = 1.0f)
     {
 
         GameObject laser = ObjectPooler.SharedInstance.GetPooledObject("Laser");
@@ -240,8 +255,8 @@ public class Laser : MonoBehaviour
             LineRenderer lr = laser.GetComponent<LineRenderer>();
             lr.SetPosition(0, start);
             lr.SetPosition(1, end);
-            lr.startColor = startColor;
-            lr.endColor = endColor;
+            lr.startColor = GetColorFromColorState( startColor);
+            lr.endColor = GetColorFromColorState(endColor);
             laser.SetActive(true);
         }
         GameObject light = ObjectPooler.SharedInstance.GetPooledObject("Light");
@@ -252,12 +267,12 @@ public class Laser : MonoBehaviour
             Light2D l = light.GetComponent<Light2D>();
             //l.range = range;
             l.intensity = lightIntensity;
-            l.color = endColor;
+            l.color = GetColorFromColorState(endColor);
             light.SetActive(true);
         }
     }
 
-    void Refract(Vector2 origin, Vector2 normal, Vector2 direction, Vector2 point, GameObject lastHit, int recursionsRemainging, float n1, float n2, Color startColor, Color endColor, float lightIntensity = 1.0f) //entering a lens and exiting
+    void Refract(Vector2 origin, Vector2 normal, Vector2 direction, Vector2 point, GameObject lastHit, int recursionsRemainging, float n1, float n2, MyColor.ColorState startColor, MyColor.ColorState endColor, float lightIntensity = 1.0f) //entering a lens and exiting
     {
         float angleOfIncidence = Vector2.Angle(normal, -direction);
         //Debug.Log("Angle of incidence = " + angleOfIncidence);
@@ -327,7 +342,7 @@ public class Laser : MonoBehaviour
         
     }
 
-    void CriticalAngle(Vector2 origin, Vector2 direction, Vector2 normal, GameObject lastHit, int recursionsRemainging, float n1, float n2, Color color, float lightIntensity)
+    void CriticalAngle(Vector2 origin, Vector2 direction, Vector2 normal, GameObject lastHit, int recursionsRemainging, float n1, float n2, MyColor.ColorState color, float lightIntensity)
     {
         //Debug.Log("Critical angle...");
         //Gizmos.DrawLine(origin + normal * 0.1f, origin - normal * 0.1f);//visualize normal
@@ -399,5 +414,56 @@ public class Laser : MonoBehaviour
             }
         }
         return exitHit;
+    }
+
+    public Color GetColorFromColorState(MyColor.ColorState myCurrentColorState)
+    {
+        Color color = new Color();
+
+        switch (myCurrentColorState)
+        {
+            case MyColor.ColorState.WHITE:
+                color = white;
+                break;
+            case MyColor.ColorState.BLUEGREEN:
+                color = blueGreen;
+                break;
+            case MyColor.ColorState.BLUEPURPLE:
+                color = bluePurple;
+                break;
+            case MyColor.ColorState.GREEN:
+                color = green;
+                break;
+            case MyColor.ColorState.ORANGE:
+                color = orange;
+                break;
+            case MyColor.ColorState.PURPLE:
+                color = purple;
+                break;
+            case MyColor.ColorState.RED:
+                color = red;
+                break;
+            case MyColor.ColorState.REDORANGE:
+                color = redOrange;
+                break;
+            case MyColor.ColorState.REDPURPLE:
+                color = redPurple;
+                break;
+            case MyColor.ColorState.YELLOW:
+                color = yellow;
+                break;
+            case MyColor.ColorState.YELLOWGREEN:
+                color = yellowGreen;
+                break;
+            case MyColor.ColorState.YELLOWORANGE:
+                color = yellowOrange;
+                break;
+            case MyColor.ColorState.BLUE:
+                color = blue;
+                break;
+        }
+            
+
+        return color;
     }
 }
