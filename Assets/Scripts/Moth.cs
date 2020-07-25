@@ -75,7 +75,7 @@ public class Moth : MonoBehaviour //SUMMARY: Moths always go toward their target
                 rb.angularVelocity = -rotateAmount * rotateSpeed;
             }
         }
-        else //if not still fly away from any moths invading personal space
+        else //if we are not attracted to receiver still fly away from any moths invading personal space
         {
             rb.angularVelocity = 0;
             if (flee) //fly away

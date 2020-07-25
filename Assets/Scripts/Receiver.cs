@@ -4,23 +4,12 @@ using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 public class Receiver : MonoBehaviour
 {
+
     float progress = 0;
-    public bool charging = false;
+    public bool isCharging = false;
     public bool charged = false;
 
-    public bool isWhite = false;
-    public bool isRed = false;
-    public bool isBlue = false;
-    public bool isYellow = false;
-    public bool isGreen = false;
-    public bool isOrange = false;
-    public bool isPurple = false;
-    public bool isRedPurple = false;
-    public bool isRedOrange = false;
-    public bool isYellowGreen = false;
-    public bool isYellowOrange = false;
-    public bool isBlueGreen = false;
-    public bool isBluePurple = false;
+    public MyColor.ColorState myColor = new MyColor.ColorState();
 
     int rotationSpeed = 10;
 
@@ -41,18 +30,18 @@ public class Receiver : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (charging && progress < 100)
+        if (isCharging && progress < 100)
         {
             progress += 33 * Time.deltaTime;
         }
-        if (!charging && progress > 0)
+        if (!isCharging && progress > 0)
         {
             progress -= 11 * Time.deltaTime;
         }
         progress = Mathf.Clamp(progress, 0, 100);
         this.transform.parent.GetComponentInChildren<Light2D>().intensity = progress / 100;
         //Debug.Log(progress);
-        charging = false;
+        isCharging = false;
 
         if (progress >= 100)
         {
