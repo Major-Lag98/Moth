@@ -102,7 +102,7 @@ public class Receiver : MonoBehaviour
     {
         Vector3 lookDirection = (Vector3)spawnLoc - this.transform.position;
         //GameObject m = Instantiate(moth,spawnLoc, Quaternion.Euler(spawnLoc));
-        GameObject moth = ObjectPooler.SharedInstance.GetPooledObject("Moth");
+        GameObject moth = ObjectPooler.Instance.GetPooledObject("moth");
         if (moth != null)
         {
             moth.transform.position = spawnLoc;

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 
 public class Laser : MonoBehaviour
@@ -46,6 +48,12 @@ public class Laser : MonoBehaviour
     public GameObject laserToSpawn;
     public MyColor.ColorState myCurrentColorState = new MyColor.ColorState();
 
+    List<GameObject> laserList = new List<GameObject>(); // Holds the currently used active lasers
+    List<GameObject> lightList = new List<GameObject>(); // Holds the currently used active lights
+
+    int laserCounter = 0; // The number of lasers we create each update. Needed for keeping the laserList in check
+    int lightCounter = 0; // The number of lights we create each update. Needed for keeping the lightList in check
+
 
     // Update is called once per frame
     private void Update()
@@ -58,8 +66,10 @@ public class Laser : MonoBehaviour
             return;
         }
 
-        foreach (GameObject laser in ObjectPooler.SharedInstance.pooledObjects) //every update redraw laser
-            laser.SetActive(false);
+        // ------- TODO I wouldn't do this every frame. Not needed
+
+        //foreach (GameObject laser in ObjectPooler.SharedInstance.pooledObjects) //every update redraw laser
+        //    laser.SetActive(false);
 
         //foreach (GameObject light in GameObject.FindGameObjectsWithTag("Light")) //every update redraw pointlights
         //    light.SetActive(false);
@@ -67,6 +77,14 @@ public class Laser : MonoBehaviour
         //ObjectPooler.SharedInstance.pooledObjects;
 
         DrawPredictedReflection(this.transform.position, this.transform.up, _maxRecursions, myCurrentColorState);
+
+        // Cull the laser list, which stores the unused lasers in the object pool
+        laserList = CullList(laserList, laserCounter, "laser");
+        lightList = CullList(lightList, lightCounter, "light");
+
+        // Reset the counter at the end
+        laserCounter = 0;
+        lightCounter = 0;
     }
 
     void DrawPredictedReflection(Vector2 origin, Vector2 direction, int recursionsRemaining, MyColor.ColorState colorState)// int reflectionsRemaining, int splitsRemaining)
@@ -247,8 +265,12 @@ public class Laser : MonoBehaviour
 
     void DrawLaser(Vector2 start, Vector2 end, MyColor.ColorState startColor, MyColor.ColorState endColor, float lightIntensity = 1.0f)
     {
+        //GameObject laser = ObjectPooler.SharedInstance.GetPooledObject("Laser");
 
-        GameObject laser = ObjectPooler.SharedInstance.GetPooledObject("Laser");
+        // Validate lasers makes sure our list has enough lasers in it. It returns itself so that we can easily access the array in one call
+        GameObject laser = ValidateList(laserList, laserCounter, "laser")[laserCounter];
+        laserCounter++; // Increment the counter
+
         if (laser != null)
         {
 
@@ -261,7 +283,11 @@ public class Laser : MonoBehaviour
             lr.endColor = GetColorFromColorState(endColor);
             laser.SetActive(true);
         }
-        GameObject light = ObjectPooler.SharedInstance.GetPooledObject("Light");
+
+        // We get the light by 'validating' the list. Then we can pull the light from the list using our light counter
+        GameObject light = ValidateList(lightList, lightCounter, "light")[lightCounter];
+        lightCounter++;
+
         if (light != null)
         {
             light.transform.position = (Vector3)end;
@@ -272,6 +298,46 @@ public class Laser : MonoBehaviour
             l.color = GetColorFromColorState(endColor);
             light.SetActive(true);
         }
+    }
+
+    /// <summary>
+    /// Validates that the list has enough objects in it. If not, the list will be appended to by objects
+    /// from the object pool
+    /// </summary>
+    /// <param name="listOfObjects">The list of objects to validate</param>
+    /// <param name="length">The length that the list needs to be </param>
+    /// <param name="objectPoolName">The name to use to get objects from the ObjectPooler</param>
+    /// <returns></returns>
+    List<GameObject> ValidateList(List<GameObject> listOfObjects, int length, string objectPoolName)
+    {
+        // While our index is still larger than the list
+        while(length >= listOfObjects.Count)
+        {
+            var obj = ObjectPooler.Instance.GetPooledObject(objectPoolName);
+            //TODO Probably want to instantiate a laser here if null. 
+            // if(obj == null)
+            // Instantiate(laser)
+            listOfObjects.Add(obj);
+        }
+
+        return listOfObjects;
+    }
+
+    /// <summary>
+    /// Culls a list and sends the unused objects to the ObjectPooler
+    /// </summary>
+    /// <param name="list">The list of objects to cull</param>
+    /// <param name="lengthToKeep">The length of the list to keep</param>
+    /// <param name="name">The name to use when the objects get pooled</param>
+    /// <returns>The culled list</returns>
+    List<GameObject> CullList(List<GameObject> list, int lengthToKeep, string name)
+    {
+        for (int i = lengthToKeep; i < list.Count; i++) // Pool each object from the length ot keep to the end of the list
+            ObjectPooler.Instance.PoolObject(name, list[i]);
+
+        // Get a range of the list. 0 to whichever is less, the length of the list or the length to keep.
+        list = list.GetRange(0, Math.Min(list.Count, lengthToKeep));
+        return list; // Return it for chaining
     }
 
     void Refract(Vector2 origin, Vector2 normal, Vector2 direction, Vector2 point, GameObject lastHit, int recursionsRemainging, float n1, float n2, MyColor.ColorState startColor, MyColor.ColorState endColor, float lightIntensity = 1.0f) //entering a lens and exiting
