@@ -57,12 +57,14 @@ public class Laser : MonoBehaviour
         {
             return;
         }
-        foreach (GameObject laser in GameObject.FindGameObjectsWithTag("Laser")) //every update redraw laser
-            laser.SetActive(false);
-        
-        foreach (GameObject light in GameObject.FindGameObjectsWithTag("Light")) //every update redraw pointlights
-            light.SetActive(false);
 
+        foreach (GameObject laser in ObjectPooler.SharedInstance.pooledObjects) //every update redraw laser
+            laser.SetActive(false);
+
+        //foreach (GameObject light in GameObject.FindGameObjectsWithTag("Light")) //every update redraw pointlights
+        //    light.SetActive(false);
+
+        //ObjectPooler.SharedInstance.pooledObjects;
 
         DrawPredictedReflection(this.transform.position, this.transform.up, _maxRecursions, myCurrentColorState);
     }

@@ -46,7 +46,7 @@ public class Receiver : MonoBehaviour
         if (progress >= 100)
         {
             charged = true;
-            foreach (Moth moth in transform.parent.gameObject.GetComponentsInChildren<Moth>())
+            foreach (MothAI moth in transform.parent.gameObject.GetComponentsInChildren<MothAI>())
             {
                 moth.attracted = true;
             }
@@ -54,7 +54,7 @@ public class Receiver : MonoBehaviour
             if (spawned == false) //make sure there is always (amount) of moths per receiver
             {
                 spawned = true;
-                for (int i = transform.parent.gameObject.GetComponentsInChildren<Moth>().Length; i < amountOfMothsToSpawn; i = transform.parent.gameObject.GetComponentsInChildren<Moth>().Length) //get all moths related to a reciever and check if we have enough or need to spawn more
+                for (int i = transform.parent.gameObject.GetComponentsInChildren<MothAI>().Length; i < amountOfMothsToSpawn; i = transform.parent.gameObject.GetComponentsInChildren<MothAI>().Length) //get all moths related to a reciever and check if we have enough or need to spawn more
                 {
                     switch (Random.Range(0, 4)) //what side of the screen should moth spawn occure?
                     {
@@ -86,7 +86,7 @@ public class Receiver : MonoBehaviour
         else
         {
             spawned = false;
-            foreach (Moth moth in transform.parent.gameObject.GetComponentsInChildren<Moth>())
+            foreach (MothAI moth in transform.parent.gameObject.GetComponentsInChildren<MothAI>())
             {
                 moth.attracted = false;
             }
@@ -108,7 +108,7 @@ public class Receiver : MonoBehaviour
             moth.transform.position = spawnLoc;
             moth.transform.rotation = Quaternion.identity;
             moth.transform.SetParent(this.transform.parent);
-            moth.GetComponent<Moth>().target = this.gameObject;
+            moth.GetComponent<MothAI>().target = this.gameObject;
             moth.SetActive(true);
         }
     }

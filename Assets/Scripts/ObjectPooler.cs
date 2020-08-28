@@ -13,7 +13,7 @@ public class ObjectPoolItem
 public class ObjectPooler : MonoBehaviour
 {
     public static ObjectPooler SharedInstance;
-    List<GameObject> pooledObjects;
+    public List<GameObject> pooledObjects;
     public List<ObjectPoolItem> itemsToPool;
 
     private void Awake()

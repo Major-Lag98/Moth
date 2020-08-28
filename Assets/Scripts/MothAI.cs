@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Moth : MonoBehaviour //SUMMARY: Moths always go toward their target which is the gems but always try to avoid eachother
+public class MothAI : MonoBehaviour //SUMMARY: Moths always go toward their target which is the gems but always try to avoid eachother
 {
     public GameObject target;
     GameObject originalTarget;
