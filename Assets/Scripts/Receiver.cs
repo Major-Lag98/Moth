@@ -21,10 +21,13 @@ public class Receiver : MonoBehaviour
 
     Vector2 screenBounds;
 
+    Light2D light2D;
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
+        light2D = this.transform.parent.GetComponentInChildren<Light2D>();
     }
 
     // Update is called once per frame
@@ -39,7 +42,7 @@ public class Receiver : MonoBehaviour
             progress -= 11 * Time.deltaTime;
         }
         progress = Mathf.Clamp(progress, 0, 100);
-        this.transform.parent.GetComponentInChildren<Light2D>().intensity = progress / 100;
+        light2D.intensity = progress / 100;
         //Debug.Log(progress);
         isCharging = false;
 

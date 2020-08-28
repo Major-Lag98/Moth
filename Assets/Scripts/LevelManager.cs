@@ -11,10 +11,12 @@ public class LevelManager : MonoBehaviour
     public GameObject pauseMenu;
     public GameObject winScreen;
 
+    Receiver[] receivers;
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        receivers = FindObjectsOfType<Receiver>() as Receiver[];
     }
 
     // Update is called once per frame
@@ -43,10 +45,10 @@ public class LevelManager : MonoBehaviour
     public void CheckForWin()
     {
         bool winCondMet = true;
-        Receiver[] receivers = FindObjectsOfType<Receiver>() as Receiver[];
+        //Receiver[] receivers = FindObjectsOfType<Receiver>() as Receiver[];
         foreach(Receiver receiver in receivers)
         {
-            Debug.Log(receivers.Length);
+            //Debug.Log(receivers.Length);
             if (receiver.charged != true) //if there exists a receiver that isnt charged, we have not won
             {
                 winCondMet = false;
