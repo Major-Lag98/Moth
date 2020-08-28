@@ -71,6 +71,8 @@ public class Laser : MonoBehaviour
         //foreach (GameObject laser in ObjectPooler.SharedInstance.pooledObjects) //every update redraw laser
         //    laser.SetActive(false);
 
+        //foreach (GameObject laser in GameObject.FindGameObjectsWithTag("Laser")) //every update redraw pointlights
+        //    laser.SetActive(false);
         //foreach (GameObject light in GameObject.FindGameObjectsWithTag("Light")) //every update redraw pointlights
         //    light.SetActive(false);
 
